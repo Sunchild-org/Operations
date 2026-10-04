@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Driven Operations Hub</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%230f1a33'/%3E%3Cg fill='none' stroke='%23dcb15e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='5' r='2.2'/%3E%3Cpath d='M12 7.2V20M8 10.5h8M5.5 14a6.5 6.5 0 0 0 13 0'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f5f8;--card:#fff;--ink:#0f172a;--mute:#66728c;--line:#e3e6ee;--soft:#eef0f6;--acc:#1c2a4e;--gold:#b8862b;--on:#fff;--sh:0 1px 2px rgba(15,23,42,.06),0 10px 28px -14px rgba(15,23,42,.22);--serif:Fraunces,Georgia,serif}
+@media(prefers-color-scheme:dark){:root{--bg:#0a0f1d;--card:#121a2e;--ink:#e9ecf5;--mute:#8d99b3;--line:#232d47;--soft:#1a2440;--acc:#dcb15e;--gold:#dcb15e;--on:#0a0f1d;--sh:0 10px 28px -14px rgba(0,0,0,.7)}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.55 Inter,system-ui,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.top{background:#0f1a33;color:#fff;position:sticky;top:0;z-index:5}
+.top div{max-width:1000px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;gap:10px}
+.mk{color:#dcb15e;flex:none}
+.br{font:700 1.2rem var(--serif);letter-spacing:2px}.br small{font:400 .8rem Inter,sans-serif;opacity:.65;margin-left:6px}
+.top nav{margin-left:auto;display:flex;gap:4px}
+.top a{color:#c9d1e6;text-decoration:none;padding:7px 13px;border-radius:99px;font-weight:500;font-size:.9rem}
+.top a.on{background:rgba(255,255,255,.12);color:#fff}
+main{max-width:1000px;margin:0 auto;padding:26px 18px 80px}
+h1{font:700 2rem/1.15 var(--serif);margin:0 0 4px}
+h2{font:600 1.3rem var(--serif);margin:30px 0 10px}
+h3{font-size:.95rem;margin:20px 0 6px;font-weight:600}
+.sub{color:var(--mute);margin:0 0 14px}
+.b{padding:10px 16px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;font:inherit;font-weight:500;cursor:pointer;transition:.15s}
+.b:hover{border-color:var(--gold)}
+.b.pri{background:var(--acc);color:var(--on);border-color:var(--acc)}
+.b.dng{color:#b4381f}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 18px}
+.sp{flex:1}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}
+.stat,.box,.card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh)}
+.stat{padding:16px 18px}.stat b{display:block;font:700 2.1rem/1.1 var(--serif);color:var(--acc)}.stat span{font-size:.82rem;color:var(--mute)}
+.box{padding:6px 20px 20px;margin-bottom:16px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.card{display:block;text-align:left;padding:18px;color:inherit;font:inherit;cursor:pointer;transition:.18s}
+.card:hover{transform:translateY(-3px);border-color:var(--gold)}
+.card .n{font:600 1.1rem var(--serif);display:block;margin-bottom:2px}
+.m{color:var(--mute);font-size:.85rem}
+.badge{display:inline-block;font-size:.72rem;padding:2px 9px;border-radius:99px;background:var(--soft);color:var(--acc);font-weight:600;margin-left:6px;vertical-align:2px}
+.meter{height:6px;background:var(--soft);border-radius:99px;overflow:hidden;margin:12px 0 6px}
+.meter i{display:block;height:100%;background:var(--gold);border-radius:99px;transition:width .3s}
+.note{background:var(--soft);border-radius:12px;padding:11px 14px;font-size:.88rem;color:var(--mute);margin:16px 0}
+.warn{border:1px solid var(--line);border-left:4px solid var(--gold);background:var(--card);border-radius:12px;padding:12px 16px;margin:16px 0;font-size:.9rem}
+input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
+textarea{min-height:64px;resize:vertical;overflow:hidden}
+input[type=checkbox]{appearance:none;-webkit-appearance:none;width:22px;height:22px;padding:0;border:1.5px solid var(--mute);border-radius:7px;display:grid;place-content:center;flex:none;cursor:pointer;transition:.15s;print-color-adjust:exact}
+input[type=checkbox]:checked{background:var(--gold);border-color:var(--gold)}
+input[type=checkbox]:checked::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2.2px 2.2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.title{font:700 1.9rem/1.2 var(--serif);border:0;border-bottom:2px solid transparent;border-radius:0;padding:4px 0;background:none;margin-bottom:6px}
+.title:focus{outline:0;border-color:var(--gold)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+label.f{display:block;font-size:.82rem;color:var(--mute);font-weight:500}label.f input,label.f select,label.f textarea{margin-top:4px;color:var(--ink)}
+.tabs{display:inline-flex;background:var(--soft);padding:4px;border-radius:12px;gap:2px;margin:6px 0 4px;max-width:100%;overflow-x:auto}
+.tab{padding:8px 16px;border:0;background:none;color:var(--mute);font:inherit;font-weight:500;cursor:pointer;border-radius:9px;white-space:nowrap}
+.tab.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.panel{display:none}.panel.show{display:block}
+.ph{display:flex;align-items:center;gap:6px;margin:24px 0 4px;padding-bottom:6px;border-bottom:2px solid var(--gold)}
+.ph input{border:0;background:none;font:600 1.02rem var(--serif);padding:2px 0}.ph input:focus{outline:0}
+.ck,.lr{display:flex;gap:12px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+.ck input.it,.lr input{border:0;background:none;padding:3px 0;border-radius:0}.lr input{border-bottom:1px solid var(--line);padding:8px 2px}
+.ck input.it:focus{outline:0}
+.ck input:checked+input.it{color:var(--mute);text-decoration:line-through}
+.x{border:0;background:none;color:var(--mute);font-size:1.3rem;line-height:1;cursor:pointer;padding:2px 8px;border-radius:8px}.x:hover{color:#b4381f;background:var(--soft)}
+.lnk{border:0;background:none;color:var(--gold);font:inherit;font-weight:600;font-size:.88rem;cursor:pointer;padding:8px 2px}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.88rem}
+th{background:var(--soft);text-align:left;padding:9px 10px;font-weight:600;color:var(--mute);font-size:.8rem}
+td{border-top:1px solid var(--line);padding:2px;vertical-align:middle}
+td input,td select{border:0;background:transparent;padding:9px 8px;min-width:84px;border-radius:6px}td input[type=checkbox]{margin:auto;min-width:0}
+.rt{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}.rt select{width:auto}
+.empty{text-align:center;padding:44px 16px;color:var(--mute)}
+.pnt{display:none}
+@media(max-width:600px){.stats{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}h1{font-size:1.65rem}.br small{display:none}}
+@media print{
+ body{background:#fff;color:#000;font-size:11pt}main{padding:0;max-width:none}
+ .top,.noprint,.tabs{display:none!important}.pnt{display:block;font:700 1.1rem var(--serif);margin-bottom:6px}
+ .panel{display:block!important}.pb{break-before:page}
+ input,select,textarea{border:0;border-bottom:1px solid #aaa;border-radius:0;background:none;color:#000;padding:3px}
+ .ck input.it{border:0}.tw,.card,.warn{box-shadow:none;border-color:#aaa}
+ h2,.ph{break-after:avoid}.ck,tr{break-inside:avoid}table{min-width:0}.tw{overflow:visible}
+}
+</style>
+</head>
+<body>
+<header class="top"><div><svg class="mk" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V22M8 11h8M5 15a7 7 0 0 0 14 0M3 13l2 2M21 13l-2 2"/></svg><span class="br">DRIVEN<small>Operations Hub</small></span><nav><a href="#/" id="n1">Programmes</a><a href="#/settings" id="n2">Settings</a></nav></div></header>
+<main id="app"></main>
+<input type="file" id="imp" accept="application/json" hidden>
+<script>
+const KEY='driven-ops-hub-v2';
+const TPL=[
+['4 weeks before',['Programme approved and objective defined','Date, time and platform or venue confirmed','Programme lead and unit contacts named','Budget estimated and approved (skip if no cost)','Task list created and owners assigned']],
+['2 weeks before',['Programme flow (run order) drafted and shared with all units','Speakers, facilitators and MC confirmed','Announcement sent to members with registration or link details','Materials requested (slides, handouts, documents)','Physical events: venue, transport, accommodation and feeding arranged']],
+['1 week before',['Every department has its briefing and resources','Reminder sent to members and participants','Backup plan written (alternate platform, backup speaker, power or data issue)']],
+['3 days before',['Rehearsal or test run completed','Final run order sent to every department and speaker','All owners confirm their tasks are on track']],
+['Day before',['Final reminder sent','Materials, equipment and links checked','Quick call or message to department contacts to confirm readiness']],
+['Day of programme',['Team joins or arrives early (at least 30 minutes)','Final check done','Programme starts on time','Attendance recorded','Issues noted live in the issues log','Programme ends on time and closing logistics done']],
+['Within 48 hours after',['Thank-you message sent to speakers, volunteers and attendees','Recording, minutes and documents filed in the shared folder','Feedback form sent to attendees','Post-programme review scheduled']]
+];
+const dflt=()=>({units:['Technical','Secretariat','Welfare'].map((n,i)=>({id:'u'+i,n})),areas:['Preparation and planning','Communication between departments','Delivery on the day','Documentation','Member care','Participant satisfaction'].map((n,i)=>({id:'a'+i,n})),formats:['Online','Physical','Hybrid'],statuses:['Not started','In progress','Done','Blocked'],tpl:TPL.map(([p,i])=>({p,i:[...i]}))});
+let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!S||!Array.isArray(S.programmes))S={programmes:[]};
+S.cfg=Object.assign(dflt(),S.cfg);
+const issue=()=>({issue:'',cause:'',fix:'',owner:'',deadline:'',repeat:false,done:false});
+const newRv=()=>({start:'',end:'',met:'',late:'',aatt:'',rate:{},ur:{},issues:[issue(),issue()],bp:'',ba:'',wl:'',fb:'',keep:'',chg:'',tpl:'',by:'',shared:'',done:false});
+const norm=p=>{p.ct=p.ct||{};p.br=p.br||{};p.cl=p.cl||[];p.tasks=p.tasks||[];p.notes=p.notes||'';p.rv=Object.assign(newRv(),p.rv)};
+S.programmes.forEach(norm);
+let cur=null,view='home',tab='plan',q='',warned=false;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const get=(o,k)=>k.split('.').reduce((a,b)=>a==null?'':a[b],o);
+const set=(o,k,v)=>{const a=k.split('.'),l=a.pop();let x=o;for(const p of a){if(x[p]==null)x[p]={};x=x[p]}x[l]=v};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){if(!warned){warned=true;alert('Could not save in this browser. Use Export to keep a backup.')}}};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const fmt=d=>d?new Date(d+'T00:00').toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}):'No date set';
+const task=()=>({task:'',owner:'',unit:'',deadline:'',status:S.cfg.statuses[0]||''});
+const prog=p=>{let t=0,d=0;p.cl.forEach(x=>x.i.forEach(i=>{t++;if(i.d)d++}));return{t,d,pc:t?Math.round(100*d/t):0}};
+function newProg(){return{id:uid(),created:Date.now(),name:'',date:'',format:S.cfg.formats[0]||'',lead:'',att:'',obj:'',notes:'',ct:{},br:{},
+ cl:S.cfg.tpl.map(x=>({p:x.p,i:x.i.map(t=>({t,d:false}))})),tasks:[task(),task(),task(),task()],rv:newRv()}}
+function openFixes(skip){const r=[];S.programmes.forEach(p=>p.rv.issues.forEach((x,i)=>{if(p.id!==skip&&(x.issue||x.fix)&&!x.done)r.push({pid:p.id,pn:p.name||'Untitled',i,...x})}));return r}
+function stats(){const R=S.programmes.filter(p=>p.rv.done),a=R.filter(p=>p.rv.start==='Yes'||p.rv.start==='No'),rt=[];
+ R.forEach(p=>Object.values(p.rv.rate).forEach(v=>{if(v)rt.push(+v)}));
+ return[[S.programmes.length,'Programmes logged'],[R.length,'Reviews completed'],[a.length?Math.round(100*a.filter(p=>p.rv.start==='Yes').length/a.length)+'%':'-','Started on time'],[rt.length?(rt.reduce((x,y)=>x+y,0)/rt.length).toFixed(1):'-','Average rating (of 5)']]}
+const opts=(o,v)=>o.map(x=>{const[a,l]=Array.isArray(x)?x:[x,x];return`<option value="${esc(a)}"${a===v?' selected':''}>${esc(l)}</option>`}).join('');
+const f=(l,k,t='text')=>`<label class="f">${l}<input type="${t}" data-k="${k}" value="${esc(get(cur,k))}"></label>`;
+const ta=(l,k)=>`<label class="f">${l}<textarea data-k="${k}">${esc(get(cur,k))}</textarea></label>`;
+const sl=(l,k,o)=>`<label class="f">${l}<select data-k="${k}">${opts(o,get(cur,k))}</select></label>`;
+const c=(k,t='text')=>`<input type="${t}" data-k="${k}" value="${esc(get(cur,k))}">`;
+const cs=(k,o)=>`<select data-k="${k}">${opts(o,get(cur,k))}</select>`;
+const cb=k=>`<input type="checkbox" data-k="${k}"${get(cur,k)?' checked':''}>`;
+const U=()=>S.cfg.units;
+function filt(){return[...S.programmes].filter(p=>!q||(p.name+p.lead).toLowerCase().includes(q.toLowerCase())).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||b.created-a.created)}
+function list(){const L=filt();if(!L.length)return'<div class="empty"><b>No programmes yet</b><br>Tap <b>New programme</b> to start your first checklist.</div>';
+ return'<div class="cards">'+L.map(p=>{const g=prog(p);return`<button class="card" data-a="open" data-id="${p.id}"><span class="n">${esc(p.name||'Untitled programme')}${p.rv.done?'<span class="badge">Reviewed</span>':''}</span><span class="m">${fmt(p.date)} &middot; ${esc(p.format)}${p.lead?' &middot; '+esc(p.lead):''}</span><div class="meter"><i style="width:${g.pc}%"></i></div><span class="m">${g.d} of ${g.t} items done</span></button>`}).join('')+'</div>'}
+function home(){const fx=openFixes();
+ return`<div class="bar"><div><h1>Programmes</h1><p class="sub" style="margin:0">Plan, run and review everything Driven does.</p></div><span class="sp"></span><button class="b pri" data-a="new">+ New programme</button></div>
+ <div class="stats">${stats().map(s=>`<div class="stat"><b>${s[0]}</b><span>${s[1]}</span></div>`).join('')}</div>
+ ${fx.length?`<div class="warn"><b>Open fixes from past reviews (${fx.length})</b>${fx.map(x=>`<div class="ck"><input type="checkbox" data-a="fix" data-pid="${x.pid}" data-i="${x.i}"><span>${esc(x.fix||x.issue)}<br><span class="m">${esc(x.pn)}${x.owner?' &middot; '+esc(x.owner):''}${x.deadline?' &middot; due '+fmt(x.deadline):''}${x.repeat?' &middot; repeat issue':''}</span></span></div>`).join('')}</div>`:''}
+ <input type="search" id="srch" placeholder="Search programmes" value="${esc(q)}" style="margin-bottom:14px"><div id="list">${list()}</div>
+ <div class="note">Your data is saved in this browser only. Export a backup regularly, and import it to use another phone or computer.</div>
+ <div class="bar"><button class="b" data-a="export">Export backup</button><button class="b" data-a="import">Import backup</button></div>`}
+function detail(p){const g=prog(p),fx=openFixes(p.id),R=p.rv,cf=S.cfg;
+ return`<div class="bar noprint"><button class="b" data-a="back">&larr; Programmes</button><span class="sp"></span><button class="b" data-a="dup">Duplicate</button><button class="b pri" data-a="print">Print / Save PDF</button><button class="b dng" data-a="del">Delete</button></div>
+ <div class="pnt">Driven &middot; Operations Directorate</div>
+ <input class="title" data-k="name" placeholder="Programme name" value="${esc(p.name)}">
+ <div class="tabs">${[['plan','Plan & checklist'],['tasks','Tasks & briefing'],['review','Review']].map(([k,l])=>`<button class="tab${tab===k?' on':''}" data-a="tab" data-t="${k}">${l}</button>`).join('')}</div>
+ <section class="panel${tab==='plan'?' show':''}"><h2>Details</h2>
+ <div class="grid">${f('Date','date','date')}${sl('Format','format',cf.formats)}${f('Programme lead','lead')}${f('Expected attendance','att')}${U().map(u=>f(esc(u.n)+' contact','ct.'+u.id)).join('')}</div>
+ ${ta('Objective (one sentence)','obj')}${ta('Notes','notes')}
+ ${fx.length?`<div class="warn noprint"><b>Carry over from past reviews</b>${fx.map(x=>`<div class="m">&bull; ${esc(x.fix||x.issue)} (${esc(x.pn)}${x.repeat?', repeat':''})</div>`).join('')}</div>`:''}
+ <h2>Checklist</h2><div class="meter"><i id="pb" style="width:${g.pc}%"></i></div><span class="m" id="pt">${g.d} of ${g.t} done (${g.pc}%)</span>
+ ${p.cl.map((ph,pi)=>`<div class="ph"><input data-k="cl.${pi}.p" value="${esc(ph.p)}"><button class="x noprint" data-a="delph" data-p="${pi}" title="Remove phase">&times;</button></div>`+ph.i.map((it,ii)=>`<div class="ck"><input type="checkbox" data-k="cl.${pi}.i.${ii}.d"${it.d?' checked':''}><input class="it" data-k="cl.${pi}.i.${ii}.t" value="${esc(it.t)}"><button class="x noprint" data-a="delitem" data-p="${pi}" data-i="${ii}" title="Remove">&times;</button></div>`).join('')+`<button class="lnk noprint" data-a="additem" data-p="${pi}">+ Add item</button>`).join('')}
+ <div class="noprint"><button class="b" style="margin-top:18px" data-a="addph">+ Add phase</button></div></section>
+ <section class="panel${tab==='tasks'?' show':''}"><h2>Task assignment</h2><p class="sub">One task, one owner, one deadline.</p>
+ <div class="tw"><table><tr><th>Task</th><th>Owner</th><th>Department</th><th>Deadline</th><th>Status</th><th class="noprint"></th></tr>
+ ${p.tasks.map((t,i)=>`<tr><td>${c(`tasks.${i}.task`)}</td><td>${c(`tasks.${i}.owner`)}</td><td>${cs(`tasks.${i}.unit`,[['','-'],...U().map(u=>[u.id,u.n])])}</td><td>${c(`tasks.${i}.deadline`,'date')}</td><td>${cs(`tasks.${i}.status`,cf.statuses)}</td><td class="noprint"><button class="x" data-a="deltask" data-i="${i}">&times;</button></td></tr>`).join('')}</table></div>
+ <button class="lnk noprint" data-a="addtask">+ Add task</button>
+ <h2>Department briefing log</h2><div class="tw"><table><tr><th>Department</th><th>Information or resources needed</th><th>Sent on</th><th>Confirmed by</th></tr>
+ ${U().map(u=>`<tr><td><b>${esc(u.n)}</b></td><td>${c(`br.${u.id}.need`)}</td><td>${c(`br.${u.id}.sent`,'date')}</td><td>${c(`br.${u.id}.by`)}</td></tr>`).join('')}</table></div></section>
+ <section class="panel pb${tab==='review'?' show':''}"><h2>Post-programme review</h2><p class="sub">Complete within 3 to 5 days. Focus on systems, not blame.</p>
+ <h3>1. Delivery</h3>
+ <div class="rt"><span>Started on time?</span>${cs('rv.start',['','Yes','No'])}</div><div class="rt"><span>Ended on time?</span>${cs('rv.end',['','Yes','No'])}</div><div class="rt"><span>Objective met?</span>${cs('rv.met',['','Fully','Partly','No'])}</div>
+ <div class="grid">${f('Actual attendance','rv.aatt')}</div>${ta('If late or over time: by how long, and why?','rv.late')}
+ <h3>2. Ratings (1 = poor, 5 = excellent)</h3>${cf.areas.map(a=>`<div class="rt"><span>${esc(a.n)}</span>${cs(`rv.rate.${a.id}`,['','1','2','3','4','5'])}</div>`).join('')}
+ <h3>3. Department reports</h3><div class="tw"><table><tr><th>Department</th><th>What worked</th><th>What failed or was late</th></tr>
+ ${U().map(u=>`<tr><td><b>${esc(u.n)}</b></td><td>${c(`rv.ur.${u.id}.w`)}</td><td>${c(`rv.ur.${u.id}.f`)}</td></tr>`).join('')}</table></div>
+ <h3>4. Issues and fixes</h3><div class="tw"><table><tr><th>Issue</th><th>Root cause</th><th>Fix for next time</th><th>Owner</th><th>Deadline</th><th>Repeat</th><th>Fixed</th><th class="noprint"></th></tr>
+ ${R.issues.map((x,i)=>`<tr><td>${c(`rv.issues.${i}.issue`)}</td><td>${c(`rv.issues.${i}.cause`)}</td><td>${c(`rv.issues.${i}.fix`)}</td><td>${c(`rv.issues.${i}.owner`)}</td><td>${c(`rv.issues.${i}.deadline`,'date')}</td><td>${cb(`rv.issues.${i}.repeat`)}</td><td>${cb(`rv.issues.${i}.done`)}</td><td class="noprint"><button class="x" data-a="delissue" data-i="${i}">&times;</button></td></tr>`).join('')}</table></div>
+ <button class="lnk noprint" data-a="addissue">+ Add issue</button><p class="m">Unfixed items appear on the home screen and in the next programme's plan.</p>
+ <h3>5. Resources</h3><div class="grid">${f('Budget planned','rv.bp')}${f('Actual spend','rv.ba')}</div>${ta('Volunteer workload: was it fair? Was anyone overloaded?','rv.wl')}
+ <h3>6. Member feedback</h3>${ta('Key points from the feedback form','rv.fb')}
+ <h3>7. Lessons</h3>${ta('Keep doing','rv.keep')}${ta('Change','rv.chg')}${ta('Updates for the checklist template','rv.tpl')}
+ <h3>Sign-off</h3><div class="grid">${f('Operations Director','rv.by')}${f('Date shared with leadership','rv.shared','date')}</div>
+ <div class="ck noprint" style="margin-top:14px">${cb('rv.done')}<span><b>Mark review as completed</b> (counts in the home statistics)</span></div></section>`}
+/* settings */
+const ci=k=>`<input data-k="${k}" value="${esc(get(S.cfg,k))}">`;
+const lst=(t,sub,l,path)=>`<div class="box"><h2>${t}</h2><p class="sub">${sub}</p>${S.cfg[l].map((x,i)=>`<div class="lr">${ci(path(i))}<button class="x" data-a="cfgdel" data-l="${l}" data-i="${i}">&times;</button></div>`).join('')}<button class="lnk" data-a="cfgadd" data-l="${l}">+ Add</button></div>`;
+function settings(){return`<h1>Settings</h1><p class="sub">Everything here is editable. Departments, rating areas and options apply across all programmes.</p>
+ ${lst('Departments','They appear in contacts, task owners, briefing and review tables.','units',i=>`units.${i}.n`)}
+ ${lst('Review rating areas','The areas you score from 1 to 5 after each programme.','areas',i=>`areas.${i}.n`)}
+ ${lst('Programme formats','Choices for the Format field.','formats',i=>`formats.${i}`)}
+ ${lst('Task statuses','The first one is used for new tasks.','statuses',i=>`statuses.${i}`)}
+ <div class="box"><h2>Checklist template</h2><p class="sub">New programmes start with a copy of this. Existing programmes are not changed.</p>
+ ${S.cfg.tpl.map((ph,pi)=>`<div class="ph">${ci(`tpl.${pi}.p`)}<button class="x" data-a="tpldelph" data-p="${pi}">&times;</button></div>`+ph.i.map((t,ii)=>`<div class="lr">${ci(`tpl.${pi}.i.${ii}`)}<button class="x" data-a="tpldelitem" data-p="${pi}" data-i="${ii}">&times;</button></div>`).join('')+`<button class="lnk" data-a="tpladditem" data-p="${pi}">+ Add item</button>`).join('')}
+ <div><button class="b" style="margin-top:16px" data-a="tpladdph">+ Add phase</button></div></div>
+ <button class="b dng" data-a="reset">Reset settings to defaults</button>`}
+function render(){const y=scrollY,h=location.hash,m=h.match(/^#\/p\/(.+)$/);
+ cur=m?S.programmes.find(p=>p.id===m[1])||null:null;view=h==='#/settings'?'set':cur?'prog':'home';
+ $('#app').innerHTML=view==='set'?settings():cur?detail(cur):home();
+ $('#n1').className=view==='set'?'':'on';$('#n2').className=view==='set'?'on':'';
+ document.title=cur&&cur.name?cur.name+' | Driven Operations Hub':'Driven Operations Hub';fit();scrollTo(0,y)}
+const fit=()=>document.querySelectorAll('textarea').forEach(t=>{t.style.height='auto';t.style.height=t.scrollHeight+'px'});
+addEventListener('hashchange',()=>{scrollTo(0,0);render()});addEventListener('beforeprint',fit);
+document.addEventListener('input',e=>{const t=e.target;
+ if(t.id==='srch'){q=t.value;$('#list').innerHTML=list();return}
+ const k=t.dataset.k,R=cur||(view==='set'?S.cfg:null);if(!k||!R)return;
+ set(R,k,t.type==='checkbox'?t.checked:t.value);save();if(t.tagName==='TEXTAREA')fit();
+ if(cur&&k.startsWith('cl.')){const g=prog(cur);$('#pb').style.width=g.pc+'%';$('#pt').textContent=g.d+' of '+g.t+' done ('+g.pc+'%)'}});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b||b.tagName==='INPUT')return;
+ const d=b.dataset,a=d.a,C=S.cfg,go=()=>{save();render()};
+ if(a==='new'){const p=newProg();S.programmes.push(p);save();tab='plan';location.hash='#/p/'+p.id}
+ else if(a==='open'){tab='plan';location.hash='#/p/'+d.id}
+ else if(a==='back')location.hash='#/';
+ else if(a==='tab'){tab=d.t;render()}
+ else if(a==='print')print();
+ else if(a==='dup'){const p=JSON.parse(JSON.stringify(cur));p.id=uid();p.created=Date.now();p.name=(p.name||'Programme')+' (copy)';p.date='';p.cl.forEach(x=>x.i.forEach(i=>i.d=false));p.tasks.forEach(t=>t.status=C.statuses[0]||'');p.rv=newRv();S.programmes.push(p);save();tab='plan';location.hash='#/p/'+p.id}
+ else if(a==='del'){if(confirm('Delete this programme and its review? This cannot be undone.')){S.programmes=S.programmes.filter(p=>p!==cur);save();location.hash='#/'}}
+ else if(a==='addtask'){cur.tasks.push(task());go()}
+ else if(a==='deltask'){cur.tasks.splice(+d.i,1);go()}
+ else if(a==='addissue'){cur.rv.issues.push(issue());go()}
+ else if(a==='delissue'){cur.rv.issues.splice(+d.i,1);go()}
+ else if(a==='additem'){const s=prompt('New checklist item');if(s&&s.trim()){cur.cl[+d.p].i.push({t:s.trim(),d:false});go()}}
+ else if(a==='delitem'){cur.cl[+d.p].i.splice(+d.i,1);go()}
+ else if(a==='addph'){const s=prompt('Name of the new phase (e.g. 1 week before)');if(s&&s.trim()){cur.cl.push({p:s.trim(),i:[]});go()}}
+ else if(a==='delph'){if(confirm('Remove this phase and its items?')){cur.cl.splice(+d.p,1);go()}}
+ else if(a==='cfgadd'){const s=prompt('Name');if(s&&s.trim()){const l=d.l;C[l].push(l==='units'||l==='areas'?{id:(l[0]+uid()),n:s.trim()}:s.trim());go()}}
+ else if(a==='cfgdel'){if(confirm('Remove this entry? Data already saved under it stays hidden.')){C[d.l].splice(+d.i,1);go()}}
+ else if(a==='tpladdph'){const s=prompt('Name of the new phase');if(s&&s.trim()){C.tpl.push({p:s.trim(),i:[]});go()}}
+ else if(a==='tpldelph'){if(confirm('Remove this phase from the template?')){C.tpl.splice(+d.p,1);go()}}
+ else if(a==='tpladditem'){const s=prompt('New checklist item');if(s&&s.trim()){C.tpl[+d.p].i.push(s.trim());go()}}
+ else if(a==='tpldelitem'){C.tpl[+d.p].i.splice(+d.i,1);go()}
+ else if(a==='reset'){if(confirm('Reset departments, rating areas, options and the template to defaults? Programmes are kept.')){S.cfg=dflt();go()}}
+ else if(a==='export'){const u=URL.createObjectURL(new Blob([JSON.stringify(S,null,1)],{type:'application/json'})),l=document.createElement('a');l.href=u;l.download='driven-ops-backup-'+new Date().toISOString().slice(0,10)+'.json';l.click();URL.revokeObjectURL(u)}
+ else if(a==='import')$('#imp').click()});
+document.addEventListener('change',e=>{const t=e.target;
+ if(t.dataset&&t.dataset.a==='fix'){const p=S.programmes.find(x=>x.id===t.dataset.pid);if(p){p.rv.issues[+t.dataset.i].done=t.checked;save();render()}}
+ if(t.id==='imp'&&t.files[0]){const r=new FileReader();r.onload=()=>{try{const j=JSON.parse(r.result);if(!j||!Array.isArray(j.programmes))throw 0;
+  if(!confirm('Import '+j.programmes.length+' programme(s)? Programmes with the same ID will be replaced.'))return;
+  j.programmes.forEach(p=>{norm(p);const i=S.programmes.findIndex(x=>x.id===p.id);i<0?S.programmes.push(p):S.programmes[i]=p});
+  if(j.cfg&&confirm('Also import the backup\'s departments, rating areas and template?'))S.cfg=Object.assign(dflt(),j.cfg);
+  save();render()}catch(x){alert('That file is not a valid Driven backup.')}t.value=''};r.readAsText(t.files[0])}});
+render();
+</script>
+</body>
+</html>
