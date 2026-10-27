@@ -8,11 +8,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f4f5f8;--card:#fff;--ink:#0f172a;--mute:#66728c;--line:#e3e6ee;--soft:#eef0f6;--acc:#1c2a4e;--gold:#b8862b;--on:#fff;--sh:0 1px 2px rgba(15,23,42,.06),0 10px 28px -14px rgba(15,23,42,.22);--serif:Fraunces,Georgia,serif}
-@media(prefers-color-scheme:dark){:root{--bg:#0a0f1d;--card:#121a2e;--ink:#e9ecf5;--mute:#8d99b3;--line:#232d47;--soft:#1a2440;--acc:#dcb15e;--gold:#dcb15e;--on:#0a0f1d;--sh:0 10px 28px -14px rgba(0,0,0,.7)}}
+:root{--bg:#f4f5f8;--card:#fff;--ink:#0f172a;--mute:#66728c;--line:#e3e6ee;--soft:#eef0f6;--acc:#1c2a4e;--gold:#b8862b;--on:#fff;--good:#2b7a4b;--bad:#b4381f;--sh:0 1px 2px rgba(15,23,42,.06),0 10px 28px -14px rgba(15,23,42,.22);--serif:Fraunces,Georgia,serif}
+@media(prefers-color-scheme:dark){:root{--bg:#0a0f1d;--card:#121a2e;--ink:#e9ecf5;--mute:#8d99b3;--line:#232d47;--soft:#1a2440;--acc:#dcb15e;--gold:#dcb15e;--on:#0a0f1d;--good:#5cc08a;--bad:#ff8f72;--sh:0 10px 28px -14px rgba(0,0,0,.7)}}
 *{box-sizing:border-box}
+html{scroll-padding-top:110px}
 body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.55 Inter,system-ui,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
-.top{background:#0f1a33;color:#fff;position:sticky;top:0;z-index:5}
+.top{background:#0f1a33;color:#fff;position:sticky;top:0;z-index:6;box-shadow:0 1px 0 rgba(220,177,94,.35)}
 .top div{max-width:1000px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;gap:10px}
 .mk{color:#dcb15e;flex:none}
 .br{font:700 1.2rem var(--serif);letter-spacing:2px}.br small{font:400 .8rem Inter,sans-serif;opacity:.65;margin-left:6px}
@@ -27,7 +28,7 @@ h3{font-size:.95rem;margin:20px 0 6px;font-weight:600}
 .b{padding:10px 16px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;font:inherit;font-weight:500;cursor:pointer;transition:.15s}
 .b:hover{border-color:var(--gold)}
 .b.pri{background:var(--acc);color:var(--on);border-color:var(--acc)}
-.b.dng{color:#b4381f}
+.b.dng{color:var(--bad)}
 .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 18px}
 .sp{flex:1}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}
@@ -47,6 +48,8 @@ h3{font-size:.95rem;margin:20px 0 6px;font-weight:600}
 input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit}
 input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
 textarea{min-height:64px;resize:vertical;overflow:hidden}
+textarea.tall{overflow:auto;min-height:120px}
+textarea.bulk{min-height:110px;margin:6px 0 10px}
 input[type=checkbox]{appearance:none;-webkit-appearance:none;width:22px;height:22px;padding:0;border:1.5px solid var(--mute);border-radius:7px;display:grid;place-content:center;flex:none;cursor:pointer;transition:.15s;print-color-adjust:exact}
 input[type=checkbox]:checked{background:var(--gold);border-color:var(--gold)}
 input[type=checkbox]:checked::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2.2px 2.2px 0;transform:rotate(45deg) translate(-1px,-1px)}
@@ -54,34 +57,94 @@ input[type=checkbox]:checked::after{content:"";width:6px;height:11px;border:soli
 .title:focus{outline:0;border-color:var(--gold)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
 label.f{display:block;font-size:.82rem;color:var(--mute);font-weight:500}label.f input,label.f select,label.f textarea{margin-top:4px;color:var(--ink)}
-.tabs{display:inline-flex;background:var(--soft);padding:4px;border-radius:12px;gap:2px;margin:6px 0 4px;max-width:100%;overflow-x:auto}
-.tab{padding:8px 16px;border:0;background:none;color:var(--mute);font:inherit;font-weight:500;cursor:pointer;border-radius:9px;white-space:nowrap}
+.tabbar{position:sticky;top:53px;z-index:4;background:var(--bg);margin:0 -18px 6px;padding:8px 18px 6px}
+.tabs{display:flex;background:var(--soft);padding:4px;border-radius:12px;gap:2px;max-width:100%;overflow-x:auto;scrollbar-width:thin}
+.tabbar .tabs{display:flex}
+.tab{padding:8px 15px;border:0;background:none;color:var(--mute);font:inherit;font-weight:500;cursor:pointer;border-radius:9px;white-space:nowrap;position:relative}
 .tab.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.tab .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-left:6px;vertical-align:2px}
+.tabs.sm{display:inline-flex;margin:0}
 .panel{display:none}.panel.show{display:block}
+.panel>h2:first-child{margin-top:14px}
 .ph{display:flex;align-items:center;gap:6px;margin:24px 0 4px;padding-bottom:6px;border-bottom:2px solid var(--gold)}
 .ph input{border:0;background:none;font:600 1.02rem var(--serif);padding:2px 0}.ph input:focus{outline:0}
 .ck,.lr{display:flex;gap:12px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
 .ck input.it,.lr input{border:0;background:none;padding:3px 0;border-radius:0}.lr input{border-bottom:1px solid var(--line);padding:8px 2px}
 .ck input.it:focus{outline:0}
 .ck input:checked+input.it{color:var(--mute);text-decoration:line-through}
-.x{border:0;background:none;color:var(--mute);font-size:1.3rem;line-height:1;cursor:pointer;padding:2px 8px;border-radius:8px}.x:hover{color:#b4381f;background:var(--soft)}
+.x{border:0;background:none;color:var(--mute);font-size:1.3rem;line-height:1;cursor:pointer;padding:2px 8px;border-radius:8px}.x:hover{color:var(--bad);background:var(--soft)}
 .lnk{border:0;background:none;color:var(--gold);font:inherit;font-weight:600;font-size:.88rem;cursor:pointer;padding:8px 2px}
 .tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
 table{border-collapse:collapse;width:100%;min-width:640px;font-size:.88rem}
-th{background:var(--soft);text-align:left;padding:9px 10px;font-weight:600;color:var(--mute);font-size:.8rem}
+table.mini{min-width:520px}
+th{background:var(--soft);text-align:left;padding:9px 10px;font-weight:600;color:var(--mute);font-size:.8rem;white-space:nowrap}
 td{border-top:1px solid var(--line);padding:2px;vertical-align:middle}
 td input,td select{border:0;background:transparent;padding:9px 8px;min-width:84px;border-radius:6px}td input[type=checkbox]{margin:auto;min-width:0}
+td input[type=time]{min-width:104px}
+input.amt{text-align:right;font-variant-numeric:tabular-nums}
+td.vr{font-size:.8rem;white-space:nowrap;padding:2px 10px;color:var(--mute)}
+[data-s=bad]{color:var(--bad)!important}[data-s=ok]{color:var(--good)!important}
 .rt{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}.rt select{width:auto}
-.empty{text-align:center;padding:44px 16px;color:var(--mute)}
+.empty{text-align:center;padding:44px 16px;color:var(--mute);background:var(--card);border:1px dashed var(--line);border-radius:16px}
 .pnt{display:none}
-@media(max-width:600px){.stats{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}h1{font-size:1.65rem}.br small{display:none}}
+.dets{margin:6px 0 12px;border:1px solid var(--line);border-radius:12px;padding:4px 14px;background:var(--card)}
+.dets summary{cursor:pointer;font-weight:600;padding:8px 0;color:var(--acc)}
+.dayc{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh);padding:14px 18px 16px;margin:0 0 16px}
+.dayh{display:flex;gap:10px;align-items:center;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--gold)}
+.dayh input{width:auto}.dayh .dl{flex:1;border:0;background:none;font:600 1.1rem var(--serif);padding:2px 0}.dayh .dl:focus{outline:0}.dayh input[type=date]{max-width:170px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:16px 0}
+.tile{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--soft)}
+.tile b{display:block;font:700 1.5rem/1.15 var(--serif);color:var(--acc);overflow-wrap:anywhere;min-height:1.7rem}
+.tile span{font-size:.72rem;color:var(--mute);letter-spacing:.05em;text-transform:uppercase}
+.tb{padding-bottom:16px}
+.bkp{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+/* report */
+.sheet{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh);padding:38px 44px;margin-top:14px}
+.rpt{display:none}.rpt.show{display:block}
+.r-head{border-bottom:3px solid var(--gold);padding-bottom:18px;margin-bottom:6px}
+.r-org{font:600 .72rem Inter,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.r-head h1{font:700 2.1rem/1.12 var(--serif);margin:10px 0 4px}
+.r-sub{font:600 1.1rem var(--serif);color:var(--mute)}
+.r-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px 20px;margin:18px 0 0}
+.r-meta dt{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.r-meta dd{margin:2px 0 0;font-weight:600;font-size:.92rem}
+.r-sec{margin-top:32px}
+.r-sec h2{display:flex;align-items:baseline;gap:12px;font:600 1.35rem var(--serif);margin:0 0 12px;padding-bottom:7px;border-bottom:1px solid var(--line);break-after:avoid}
+.r-sec h2 span{font:600 .78rem Inter,sans-serif;color:var(--gold);letter-spacing:.12em}
+.r-sec h3{font:600 1.02rem var(--serif);margin:22px 0 8px;break-after:avoid}
+.r-sec p{margin:0 0 10px}
+.r-day{margin:0 0 24px}
+.rtbl{width:100%;min-width:0;border-collapse:collapse;font-size:.84rem}
+.rtbl th{background:var(--soft);padding:8px 10px;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);white-space:normal}
+.rtbl td{border-top:1px solid var(--line);padding:7px 10px;vertical-align:top}
+.rtbl .n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.rtbl tr.tot td{font-weight:700;border-top:2px solid var(--ink)}
+.rtbl td small{color:var(--mute);display:block}
+.sh{display:inline-block;width:70px;height:6px;border-radius:9px;background:var(--soft);vertical-align:middle;margin-right:8px;overflow:hidden}
+.sh i{display:block;height:100%;background:var(--gold)}
+.names{columns:2;column-gap:30px;padding-left:28px;margin:6px 0;font-size:.88rem}.names li{break-inside:avoid;padding:1px 0}
+.callout{border-left:4px solid var(--gold);background:var(--soft);padding:10px 14px;border-radius:0 10px 10px 0;margin:10px 0}
+.callout b{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:2px}
+.tag{display:inline-block;font-size:.68rem;font-weight:600;padding:1px 8px;border-radius:99px;background:var(--soft);color:var(--acc);white-space:nowrap}
+.tag.bad{color:var(--bad)}.tag.ok{color:var(--good)}
+.r-foot{margin-top:36px;padding-top:12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--mute);font-size:.8rem}
+.r-empty{margin:26px 0;padding:26px;text-align:center;color:var(--mute);border:1px dashed var(--line);border-radius:14px}
+.signs{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:22px}
+.signs div{border-top:1px solid var(--ink);padding-top:6px;font-size:.82rem;color:var(--mute)}.signs b{display:block;color:var(--ink);font-size:.92rem}
+@media(max-width:600px){.title{font-size:1.35rem}.stats{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}h1{font-size:1.65rem}.br small{display:none}.sheet{padding:22px 18px;border-radius:14px}.r-head h1{font-size:1.6rem}.names{columns:1}.signs{grid-template-columns:1fr}.dayh{flex-wrap:wrap}}
 @media print{
- body{background:#fff;color:#000;font-size:11pt}main{padding:0;max-width:none}
- .top,.noprint,.tabs{display:none!important}.pnt{display:block;font:700 1.1rem var(--serif);margin-bottom:6px}
+ @page{margin:14mm}
+ :root{--bg:#fff;--card:#fff;--ink:#000;--mute:#555;--line:#ccc;--soft:#f2f2f2;--acc:#1c2a4e;--gold:#b8862b;--good:#2b7a4b;--bad:#b4381f;--sh:none}
+ body{background:#fff;color:#000;font-size:10.5pt}main{padding:0;max-width:none}
+ .top,.noprint,.tabs,.tabbar{display:none!important}.pnt{display:block;font:700 1.1rem var(--serif);margin-bottom:6px}
  .panel{display:block!important}.pb{break-before:page}
+ body.rep .panel:not(.rp){display:none!important}body:not(.rep) .panel.rp{display:none!important}body.rep .pnt{display:none}
+ .rpt{display:block!important}.rpt.pb{break-before:page}
+ .sheet{border:0;box-shadow:none;padding:0;margin:0;border-radius:0}
  input,select,textarea{border:0;border-bottom:1px solid #aaa;border-radius:0;background:none;color:#000;padding:3px}
- .ck input.it{border:0}.tw,.card,.warn{box-shadow:none;border-color:#aaa}
- h2,.ph{break-after:avoid}.ck,tr{break-inside:avoid}table{min-width:0}.tw{overflow:visible}
+ .ck input.it{border:0}.tw,.card,.warn,.dayc,.box,.tile{box-shadow:none;border-color:#aaa}
+ h2,.ph{break-after:avoid}.ck,tr,.tile{break-inside:avoid}table{min-width:0}.tw{overflow:visible}
+ thead{display:table-header-group}.rtbl td,.rtbl th{padding:5px 7px}
 }
 </style>
 </head>
@@ -93,93 +156,285 @@ td input,td select{border:0;background:transparent;padding:9px 8px;min-width:84p
 const KEY='driven-ops-hub-v2';
 const TPL=[
 ['4 weeks before',['Programme approved and objective defined','Date, time and platform or venue confirmed','Programme lead and unit contacts named','Budget estimated and approved (skip if no cost)','Task list created and owners assigned']],
-['2 weeks before',['Programme flow (run order) drafted and shared with all units','Speakers, facilitators and MC confirmed','Announcement sent to members with registration or link details','Materials requested (slides, handouts, documents)','Physical events: venue, transport, accommodation and feeding arranged']],
-['1 week before',['Every department has its briefing and resources','Reminder sent to members and participants','Backup plan written (alternate platform, backup speaker, power or data issue)']],
+['2 weeks before',['Programme flow (run order) drafted and shared with all units','Speakers, facilitators and MC confirmed','Announcement sent to members with registration or link details','Materials requested (slides, handouts, documents)','Physical events: venue, transport, accommodation and feeding arranged','Physical events: venue confirmed in writing, inspected, with a backup venue identified (2 to 3 weeks out at the latest)']],
+['1 week before',['Every department has its briefing and resources','Reminder sent to members and participants','Backup plan written (alternate platform, backup speaker, power or data issue)','Team budgets released and each team knows to keep receipts']],
 ['3 days before',['Rehearsal or test run completed','Final run order sent to every department and speaker','All owners confirm their tasks are on track']],
 ['Day before',['Final reminder sent','Materials, equipment and links checked','Quick call or message to department contacts to confirm readiness']],
-['Day of programme',['Team joins or arrives early (at least 30 minutes)','Final check done','Programme starts on time','Attendance recorded','Issues noted live in the issues log','Programme ends on time and closing logistics done']],
-['Within 48 hours after',['Thank-you message sent to speakers, volunteers and attendees','Recording, minutes and documents filed in the shared folder','Feedback form sent to attendees','Post-programme review scheduled']]
+['Day of programme',['Team joins or arrives early (at least 30 minutes)','Final check done','Setup finished at least 15 minutes before each session','Programme starts on time','Attendance recorded','Issues noted live in the issues log','Programme ends on time and closing logistics done']],
+['Within 48 hours after',['Thank-you message sent to speakers, volunteers and attendees','Recording, minutes and documents filed in the shared folder','Spending reports and unspent funds returned to Finance','Feedback form sent to attendees','Post-programme review scheduled']]
 ];
-const dflt=()=>({units:['Technical','Secretariat','Welfare'].map((n,i)=>({id:'u'+i,n})),areas:['Preparation and planning','Communication between departments','Delivery on the day','Documentation','Member care','Participant satisfaction'].map((n,i)=>({id:'a'+i,n})),formats:['Online','Physical','Hybrid'],statuses:['Not started','In progress','Done','Blocked'],tpl:TPL.map(([p,i])=>({p,i:[...i]}))});
+const UNITS=['Technical','Secretariat','Welfare','Venue Management and Sanitation',"Labourers' Directorate",'Health and Nutrition','Ushering','Protocol','Media','Music','Marketing','Programmes','Prayer','Counselling'];
+const dflt=()=>({units:UNITS.map((n,i)=>({id:'u'+i,n})),areas:['Preparation and planning','Communication between departments','Delivery on the day','Documentation','Member care','Participant satisfaction'].map((n,i)=>({id:'a'+i,n})),formats:['Online','Physical','Hybrid'],statuses:['Not started','In progress','Done','Blocked'],tpl:TPL.map(([p,i])=>({p,i:[...i]})),cur:'₦',org:'Driven',unitsV3:true});
 let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 if(!S||!Array.isArray(S.programmes))S={programmes:[]};
-S.cfg=Object.assign(dflt(),S.cfg);
+if(S.cfg&&!S.cfg.unitsV3&&Array.isArray(S.cfg.units)&&S.cfg.units.length===3&&S.cfg.units.every((u,i)=>u&&u.id==='u'+i))S.cfg.units=S.cfg.units.concat(dflt().units.slice(3));
+S.cfg=Object.assign(dflt(),S.cfg,{unitsV3:true});
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist().catch(()=>{})}catch(e){}
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
 const issue=()=>({issue:'',cause:'',fix:'',owner:'',deadline:'',repeat:false,done:false});
 const newRv=()=>({start:'',end:'',met:'',late:'',aatt:'',rate:{},ur:{},issues:[issue(),issue()],bp:'',ba:'',wl:'',fb:'',keep:'',chg:'',tpl:'',by:'',shared:'',done:false});
-const norm=p=>{p.ct=p.ct||{};p.br=p.br||{};p.cl=p.cl||[];p.tasks=p.tasks||[];p.notes=p.notes||'';p.rv=Object.assign(newRv(),p.rv)};
+const sess=()=>({ps:'',as:'',pe:'',ae:'',t:'',who:'',n:''});
+const newDay=l=>({id:uid(),l:l||'',d:'',s:[sess(),sess()],sum:''});
+const newFin=()=>({open:'',int:'',bank:'',c:[],r:[],p:[],ch:[],ti:{},tx:{},note:''});
+const newVenue=()=>({name:'',loc:'',acc:'',vc:'',ac:'',tl:[],bk:'',chg:'',chgd:'',su:'',sd:'',fs:'',les:''});
+const norm=p=>{p.ct=p.ct||{};p.br=p.br||{};p.cl=p.cl||[];p.tasks=p.tasks||[];p.notes=p.notes||'';p.end=p.end||'';p.theme=p.theme||'';p.sum=p.sum||'';
+ p.days=Array.isArray(p.days)?p.days:[];p.days.forEach(d=>{if(!Array.isArray(d.s))d.s=[]});p.ad=Array.isArray(p.ad)?p.ad:[];p.people=p.people||'';p.anote=p.anote||'';
+ p.venue=Object.assign(newVenue(),p.venue);if(!Array.isArray(p.venue.tl))p.venue.tl=[];
+ p.fin=Object.assign(newFin(),p.fin);['c','r','p','ch'].forEach(k=>{if(!Array.isArray(p.fin[k]))p.fin[k]=[]});['ti','tx'].forEach(k=>{if(!p.fin[k]||typeof p.fin[k]!=='object')p.fin[k]={}});
+ p.rv=Object.assign(newRv(),p.rv)};
 S.programmes.forEach(norm);
-let cur=null,view='home',tab='plan',q='',warned=false;
+let cur=null,view='home',tab='plan',rtab='prog',q='',warned=false;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const get=(o,k)=>k.split('.').reduce((a,b)=>a==null?'':a[b],o);
 const set=(o,k,v)=>{const a=k.split('.'),l=a.pop();let x=o;for(const p of a){if(x[p]==null)x[p]={};x=x[p]}x[l]=v};
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){if(!warned){warned=true;alert('Could not save in this browser. Use Export to keep a backup.')}}};
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const save=()=>{S.changed=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){if(!warned){warned=true;alert('Could not save in this browser. Use Export to keep a backup.')}}};
+const pad=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 const fmt=d=>d?new Date(d+'T00:00').toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}):'No date set';
+const fmtL=d=>d?new Date(d+'T00:00').toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'';
+const rng=p=>!p.date?'':(p.end&&p.end!==p.date?fmt(p.date)+' to '+fmt(p.end):fmt(p.date));
+const slug=s=>(String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''))||'programme';
 const task=()=>({task:'',owner:'',unit:'',deadline:'',status:S.cfg.statuses[0]||''});
 const prog=p=>{let t=0,d=0;p.cl.forEach(x=>x.i.forEach(i=>{t++;if(i.d)d++}));return{t,d,pc:t?Math.round(100*d/t):0}};
-function newProg(){return{id:uid(),created:Date.now(),name:'',date:'',format:S.cfg.formats[0]||'',lead:'',att:'',obj:'',notes:'',ct:{},br:{},
- cl:S.cfg.tpl.map(x=>({p:x.p,i:x.i.map(t=>({t,d:false}))})),tasks:[task(),task(),task(),task()],rv:newRv()}}
+function newProg(){return{id:uid(),created:Date.now(),name:'',date:'',end:'',theme:'',format:S.cfg.formats[0]||'',lead:'',att:'',obj:'',notes:'',sum:'',ct:{},br:{},
+ cl:S.cfg.tpl.map(x=>({p:x.p,i:x.i.map(t=>({t,d:false}))})),tasks:[task(),task(),task(),task()],days:[],ad:[],people:'',anote:'',venue:newVenue(),fin:newFin(),rv:newRv()}}
 function openFixes(skip){const r=[];S.programmes.forEach(p=>p.rv.issues.forEach((x,i)=>{if(p.id!==skip&&(x.issue||x.fix)&&!x.done)r.push({pid:p.id,pn:p.name||'Untitled',i,...x})}));return r}
 function stats(){const R=S.programmes.filter(p=>p.rv.done),a=R.filter(p=>p.rv.start==='Yes'||p.rv.start==='No'),rt=[];
  R.forEach(p=>Object.values(p.rv.rate).forEach(v=>{if(v)rt.push(+v)}));
  return[[S.programmes.length,'Programmes logged'],[R.length,'Reviews completed'],[a.length?Math.round(100*a.filter(p=>p.rv.start==='Yes').length/a.length)+'%':'-','Started on time'],[rt.length?(rt.reduce((x,y)=>x+y,0)/rt.length).toFixed(1):'-','Average rating (of 5)']]}
 const opts=(o,v)=>o.map(x=>{const[a,l]=Array.isArray(x)?x:[x,x];return`<option value="${esc(a)}"${a===v?' selected':''}>${esc(l)}</option>`}).join('');
 const f=(l,k,t='text')=>`<label class="f">${l}<input type="${t}" data-k="${k}" value="${esc(get(cur,k))}"></label>`;
-const ta=(l,k)=>`<label class="f">${l}<textarea data-k="${k}">${esc(get(cur,k))}</textarea></label>`;
+const fa=(l,k)=>`<label class="f">${l}<input class="amt" inputmode="decimal" data-k="${k}" value="${esc(get(cur,k))}"></label>`;
+const ta=(l,k,cl='')=>`<label class="f">${l}<textarea${cl?` class="${cl}"`:''} data-k="${k}">${esc(get(cur,k))}</textarea></label>`;
 const sl=(l,k,o)=>`<label class="f">${l}<select data-k="${k}">${opts(o,get(cur,k))}</select></label>`;
 const c=(k,t='text')=>`<input type="${t}" data-k="${k}" value="${esc(get(cur,k))}">`;
+const ca=k=>`<input class="amt" inputmode="decimal" data-k="${k}" value="${esc(get(cur,k))}">`;
 const cs=(k,o)=>`<select data-k="${k}">${opts(o,get(cur,k))}</select>`;
 const cb=k=>`<input type="checkbox" data-k="${k}"${get(cur,k)?' checked':''}>`;
 const U=()=>S.cfg.units;
-function filt(){return[...S.programmes].filter(p=>!q||(p.name+p.lead).toLowerCase().includes(q.toLowerCase())).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||b.created-a.created)}
-function list(){const L=filt();if(!L.length)return'<div class="empty"><b>No programmes yet</b><br>Tap <b>New programme</b> to start your first checklist.</div>';
- return'<div class="cards">'+L.map(p=>{const g=prog(p);return`<button class="card" data-a="open" data-id="${p.id}"><span class="n">${esc(p.name||'Untitled programme')}${p.rv.done?'<span class="badge">Reviewed</span>':''}</span><span class="m">${fmt(p.date)} &middot; ${esc(p.format)}${p.lead?' &middot; '+esc(p.lead):''}</span><div class="meter"><i style="width:${g.pc}%"></i></div><span class="m">${g.d} of ${g.t} items done</span></button>`}).join('')+'</div>'}
+const teamOpts=()=>[['','Not tied to a team'],['direct','Paid directly to a vendor'],...U().map(u=>[u.id,u.n])];
+/* ---------- numbers ---------- */
+const num=v=>{const x=parseFloat(String(v==null?'':v).replace(/[^0-9.\-]/g,''));return isFinite(x)?x:0};
+const sum=a=>a.reduce((x,y)=>x+y,0);
+const r2=n=>Math.round(n*100)/100;
+const M=n=>{n=r2(n);const a=Math.abs(n),s=S.cfg.cur+a.toLocaleString('en-US',Number.isInteger(a)?{}:{minimumFractionDigits:2,maximumFractionDigits:2});return n<0?'('+s+')':s};
+const pct=(a,b)=>b?(100*a/b).toFixed(1)+'%':'-';
+const names=p=>{const seen=new Set(),o=[];String(p.people||'').split('\n').forEach(l=>{const n=l.replace(/^\s*\d+\s*[.)\-]\s*/,'').trim().replace(/\s+/g,' ');if(n&&!seen.has(n.toLowerCase())){seen.add(n.toLowerCase());o.push(n)}});return o};
+const tm=s=>{const m=/^(\d{1,2}):(\d{2})/.exec(s||'');return m?+m[1]*60+ +m[2]:null};
+const dm=(a,b)=>{const x=tm(a),y=tm(b);if(x==null||y==null)return null;let d=y-x;if(d<-720)d+=1440;if(d>720)d-=1440;return d};
+const vs=d=>d==null?'':d===0?'on time':(d>0?'+':'−')+Math.abs(d)+' min';
+const hm=s=>{const m=tm(s);if(m==null)return'';const h=Math.floor(m/60);return((h%12)||12)+':'+pad(m%60)+(h>=12?'pm':'am')};
+const span=(a,b)=>(a&&b)?hm(a)+'–'+hm(b):(hm(a)||hm(b));
+function sessVar(x){const a=dm(x.ps,x.as),b=dm(x.pe,x.ae),o=[];if(a!=null)o.push('Start '+vs(a));if(b!=null)o.push('End '+vs(b));const w=Math.max(a==null?0:a,b==null?0:b);return{t:o.join(' · '),s:w>0?'bad':(o.length?'ok':'')}}
+function FN(p){const f=p.fin,cc=sum(f.c.map(x=>num(x.a))),rf=sum(f.r.map(x=>num(x.a))),it=num(f.int),op=num(f.open),pay=sum(f.p.map(x=>num(x.a))),ch=sum(f.ch.map(x=>num(x.a))),inn=cc+rf+it,out=pay+ch;
+ return{c:cc,rf,it,op,pay,ch,inn,out,close:op+inn-out,has:!!(f.c.length||f.p.length||f.r.length||f.ch.length||op)}}
+const TIERS=[[0,5000],[5000,10000],[10000,20000],[20000,50000],[50000,Infinity]];
+const tierLabel=([a,b])=>!a?'Under '+M(b):b===Infinity?M(a)+' and above':M(a)+' to '+M(b-1);
+function CS(p){const rows=p.fin.c.filter(x=>num(x.a)>0),v=rows.map(x=>num(x.a)),n=v.length,t=sum(v),s=[...v].sort((a,b)=>a-b),med=n?(n%2?s[(n-1)/2]:(s[n/2-1]+s[n/2])/2):0,cnt={};
+ v.forEach(x=>cnt[x]=(cnt[x]||0)+1);let mode=0,mc=0;for(const k in cnt)if(cnt[k]>mc){mc=cnt[k];mode=+k}
+ const org=rows.filter(x=>x.ty==='Organisation');
+ return{n,t,avg:n?t/n:0,med,max:n?s[n-1]:0,mode,mc,ind:n-org.length,org:org.length,orgT:sum(org.map(x=>num(x.a))),tiers:TIERS.map(([a,b])=>{const r=v.filter(x=>x>=a&&x<b);return{a,b,n:r.length,t:sum(r)}})}}
+function TM(p,id){const f=p.fin,items=f.ti[id]||[],rec=sum(f.p.filter(x=>x.t===id).map(x=>num(x.a)))+num(f.tx[id]),sp=sum(items.map(x=>num(x.a))),ret=sum(f.r.filter(x=>x.t===id).map(x=>num(x.a))),bal=rec-sp,hasItems=items.some(x=>num(x.a)||(x.i||'').trim());
+ let st='';if(rec||sp){if(!hasItems)st='No spending report';else if(r2(bal)<0)st='Deficit';else if(r2(bal)===0)st='Balanced';else st=ret>=bal-.005?'Returned':ret>0?M(ret)+' returned':'Unspent balance'}
+ return{rec,sp,ret,bal,st,hasItems,items}}
+function PC(p){const m=new Map();p.fin.p.forEach(x=>{const a=num(x.a);if(!a)return;const u=U().find(y=>y.id===x.t),k=(x.cat||'').trim()||(u?u.n:'')||(x.pu||'').trim()||'Other';m.set(k,(m.get(k)||0)+a)});return[...m].sort((a,b)=>b[1]-a[1])}
+const HAS={days:p=>p.days.some(d=>d.l||d.sum||d.s.some(s=>s.t||s.ps||s.as||s.pe||s.ae)),att:p=>p.ad.some(x=>x.n)||names(p).length>0,venue:p=>Object.entries(p.venue).some(([k,v])=>k==='tl'?v.some(x=>x.w||x.d):!!v),fin:p=>FN(p).has,review:p=>p.rv.done};
+const TABS=[['plan','Plan & checklist'],['tasks','Tasks & briefing'],['days','Day log'],['att','Attendance'],['venue','Venue'],['fin','Finance'],['review','Review'],['report','Report']];
+/* ---------- live calculations ---------- */
+const CALC={
+ sv:(d,s)=>sessVar(cur.days[+d].s[+s]),
+ an:()=>String(names(cur).length),
+ apk:()=>{const v=cur.ad.map(x=>num(x.n)).filter(Boolean);return v.length?String(Math.max(...v)):'-'},
+ aavg:()=>{const v=cur.ad.map(x=>num(x.n)).filter(Boolean);return v.length?String(Math.round(sum(v)/v.length)):'-'},
+ aexp:()=>cur.att||'-',
+ setup:()=>{const m=dm(cur.venue.sd,cur.venue.fs);if(m==null)return'';return{t:m>=0?m+' min before the first session'+(m<15?' (target: at least 15)':''):Math.abs(m)+' min after the first session was due to start',s:m>=15?'ok':'bad'}},
+ ctot:()=>M(FN(cur).c),cn:()=>String(CS(cur).n),rtot:()=>M(FN(cur).rf),ptot:()=>M(FN(cur).pay),chtot:()=>M(FN(cur).ch),
+ finin:()=>M(FN(cur).inn),finout:()=>M(FN(cur).out),finclose:()=>M(FN(cur).close),
+ ropen:()=>M(FN(cur).op),rcon:()=>M(FN(cur).c),rref:()=>M(FN(cur).rf),rint:()=>M(FN(cur).it),rin:()=>M(FN(cur).inn),rout:()=>M(FN(cur).out),rpay:()=>M(FN(cur).pay),rch:()=>M(FN(cur).ch),rclose:()=>M(FN(cur).close),
+ outuse:()=>M(FN(cur).out),
+ chk:()=>{const b=cur.fin.bank;if(b==null||String(b).trim()==='')return'Enter the closing balance from your bank statement to check the records.';const d=r2(FN(cur).close-num(b));return d===0?{t:'Records match the bank statement',s:'ok'}:{t:'Records are '+M(Math.abs(d))+(d>0?' higher':' lower')+' than the bank statement',s:'bad'}},
+ trec:id=>M(TM(cur,id).rec),tsp:id=>M(TM(cur,id).sp),tbal:id=>M(TM(cur,id).bal),
+ tst:id=>{const t=TM(cur,id);return{t:t.st||'-',s:(t.st==='Deficit'||t.st==='No spending report')?'bad':t.st?'ok':''}}
+};
+function calc(){if(!cur)return;document.querySelectorAll('[data-c]').forEach(el=>{const[t,...a]=el.dataset.c.split(':'),fn=CALC[t];if(!fn)return;let r;try{r=fn(...a)}catch(e){r=''}
+ if(r&&typeof r==='object'){el.textContent=r.t;el.dataset.s=r.s||''}else{el.textContent=r==null?'':r;el.dataset.s=''}})}
+/* ---------- home ---------- */
+function list(){const L=[...S.programmes].filter(p=>!q||(p.name+p.lead).toLowerCase().includes(q.toLowerCase())).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||b.created-a.created);
+ if(!L.length)return'<div class="empty"><b>No programmes yet</b><br>Tap <b>New programme</b> to start your first checklist.</div>';
+ return'<div class="cards">'+L.map(p=>{const g=prog(p);return`<button class="card" data-a="open" data-id="${p.id}"><span class="n">${esc(p.name||'Untitled programme')}${p.rv.done?'<span class="badge">Reviewed</span>':''}</span><span class="m">${esc(rng(p)||'No date set')} &middot; ${esc(p.format)}${p.lead?' &middot; '+esc(p.lead):''}</span><div class="meter"><i style="width:${g.pc}%"></i></div><span class="m">${g.d} of ${g.t} items done</span></button>`}).join('')+'</div>'}
+function bkNote(){if(!S.programmes.length)return'';const b=S.backup,d=b?Math.floor((Date.now()-b)/864e5):null;
+ if(!b)return'<div class="warn"><b>No backup yet.</b> Your programmes live in this browser only. <button class="lnk" data-a="export">Export a backup now</button></div>';
+ if((S.changed||0)>b&&d>=7)return`<div class="warn"><b>Last backup was ${d} days ago.</b> Newer changes are not backed up. <button class="lnk" data-a="export">Export a backup now</button></div>`;return''}
 function home(){const fx=openFixes();
- return`<div class="bar"><div><h1>Programmes</h1><p class="sub" style="margin:0">Plan, run and review everything Driven does.</p></div><span class="sp"></span><button class="b pri" data-a="new">+ New programme</button></div>
+ return`<div class="bar"><div><h1>Programmes</h1><p class="sub" style="margin:0">Plan, run, report on and review everything Driven does.</p></div><span class="sp"></span><button class="b pri" data-a="new">+ New programme</button></div>
  <div class="stats">${stats().map(s=>`<div class="stat"><b>${s[0]}</b><span>${s[1]}</span></div>`).join('')}</div>
+ ${bkNote()}
  ${fx.length?`<div class="warn"><b>Open fixes from past reviews (${fx.length})</b>${fx.map(x=>`<div class="ck"><input type="checkbox" data-a="fix" data-pid="${x.pid}" data-i="${x.i}"><span>${esc(x.fix||x.issue)}<br><span class="m">${esc(x.pn)}${x.owner?' &middot; '+esc(x.owner):''}${x.deadline?' &middot; due '+fmt(x.deadline):''}${x.repeat?' &middot; repeat issue':''}</span></span></div>`).join('')}</div>`:''}
  <input type="search" id="srch" placeholder="Search programmes" value="${esc(q)}" style="margin-bottom:14px"><div id="list">${list()}</div>
- <div class="note">Your data is saved in this browser only. Export a backup regularly, and import it to use another phone or computer.</div>
+ <div class="note">Your data is saved in this browser only. Export a backup regularly, and import it to use another phone or computer. Each programme can also be exported on its own, or shared as a finished report file.</div>
  <div class="bar"><button class="b" data-a="export">Export backup</button><button class="b" data-a="import">Import backup</button></div>`}
-function detail(p){const g=prog(p),fx=openFixes(p.id),R=p.rv,cf=S.cfg;
- return`<div class="bar noprint"><button class="b" data-a="back">&larr; Programmes</button><span class="sp"></span><button class="b" data-a="dup">Duplicate</button><button class="b pri" data-a="print">Print / Save PDF</button><button class="b dng" data-a="del">Delete</button></div>
- <div class="pnt">Driven &middot; Operations Directorate</div>
- <input class="title" data-k="name" placeholder="Programme name" value="${esc(p.name)}">
- <div class="tabs">${[['plan','Plan & checklist'],['tasks','Tasks & briefing'],['review','Review']].map(([k,l])=>`<button class="tab${tab===k?' on':''}" data-a="tab" data-t="${k}">${l}</button>`).join('')}</div>
- <section class="panel${tab==='plan'?' show':''}"><h2>Details</h2>
- <div class="grid">${f('Date','date','date')}${sl('Format','format',cf.formats)}${f('Programme lead','lead')}${f('Expected attendance','att')}${U().map(u=>f(esc(u.n)+' contact','ct.'+u.id)).join('')}</div>
+/* ---------- programme panels ---------- */
+function planPanel(p,fxs,g){const cf=S.cfg;return`<section class="panel${tab==='plan'?' show':''}"><h2>Details</h2>
+ <div class="grid">${f('Start date','date','date')}${f('End date (if it runs for more than one day)','end','date')}${f('Theme (optional)','theme')}${sl('Format','format',cf.formats)}${f('Programme lead','lead')}${f('Expected attendance','att')}</div>
+ <details class="dets"><summary>Department contacts (${U().length})</summary><div class="grid">${U().map(u=>f(esc(u.n)+' contact','ct.'+u.id)).join('')}</div></details>
  ${ta('Objective (one sentence)','obj')}${ta('Notes','notes')}
- ${fx.length?`<div class="warn noprint"><b>Carry over from past reviews</b>${fx.map(x=>`<div class="m">&bull; ${esc(x.fix||x.issue)} (${esc(x.pn)}${x.repeat?', repeat':''})</div>`).join('')}</div>`:''}
+ ${fxs.length?`<div class="warn noprint"><b>Carry over from past reviews</b>${fxs.map(x=>`<div class="m">&bull; ${esc(x.fix||x.issue)} (${esc(x.pn)}${x.repeat?', repeat':''})</div>`).join('')}</div>`:''}
  <h2>Checklist</h2><div class="meter"><i id="pb" style="width:${g.pc}%"></i></div><span class="m" id="pt">${g.d} of ${g.t} done (${g.pc}%)</span>
  ${p.cl.map((ph,pi)=>`<div class="ph"><input data-k="cl.${pi}.p" value="${esc(ph.p)}"><button class="x noprint" data-a="delph" data-p="${pi}" title="Remove phase">&times;</button></div>`+ph.i.map((it,ii)=>`<div class="ck"><input type="checkbox" data-k="cl.${pi}.i.${ii}.d"${it.d?' checked':''}><input class="it" data-k="cl.${pi}.i.${ii}.t" value="${esc(it.t)}"><button class="x noprint" data-a="delitem" data-p="${pi}" data-i="${ii}" title="Remove">&times;</button></div>`).join('')+`<button class="lnk noprint" data-a="additem" data-p="${pi}">+ Add item</button>`).join('')}
- <div class="noprint"><button class="b" style="margin-top:18px" data-a="addph">+ Add phase</button></div></section>
- <section class="panel${tab==='tasks'?' show':''}"><h2>Task assignment</h2><p class="sub">One task, one owner, one deadline.</p>
+ <div class="noprint"><button class="b" style="margin-top:18px" data-a="addph">+ Add phase</button></div></section>`}
+function tasksPanel(p){const cf=S.cfg;return`<section class="panel${tab==='tasks'?' show':''}"><h2>Task assignment</h2><p class="sub">One task, one owner, one deadline.</p>
  <div class="tw"><table><tr><th>Task</th><th>Owner</th><th>Department</th><th>Deadline</th><th>Status</th><th class="noprint"></th></tr>
  ${p.tasks.map((t,i)=>`<tr><td>${c(`tasks.${i}.task`)}</td><td>${c(`tasks.${i}.owner`)}</td><td>${cs(`tasks.${i}.unit`,[['','-'],...U().map(u=>[u.id,u.n])])}</td><td>${c(`tasks.${i}.deadline`,'date')}</td><td>${cs(`tasks.${i}.status`,cf.statuses)}</td><td class="noprint"><button class="x" data-a="deltask" data-i="${i}">&times;</button></td></tr>`).join('')}</table></div>
  <button class="lnk noprint" data-a="addtask">+ Add task</button>
  <h2>Department briefing log</h2><div class="tw"><table><tr><th>Department</th><th>Information or resources needed</th><th>Sent on</th><th>Confirmed by</th></tr>
- ${U().map(u=>`<tr><td><b>${esc(u.n)}</b></td><td>${c(`br.${u.id}.need`)}</td><td>${c(`br.${u.id}.sent`,'date')}</td><td>${c(`br.${u.id}.by`)}</td></tr>`).join('')}</table></div></section>
- <section class="panel pb${tab==='review'?' show':''}"><h2>Post-programme review</h2><p class="sub">Complete within 3 to 5 days. Focus on systems, not blame.</p>
+ ${U().map(u=>`<tr><td><b>${esc(u.n)}</b></td><td>${c(`br.${u.id}.need`)}</td><td>${c(`br.${u.id}.sent`,'date')}</td><td>${c(`br.${u.id}.by`)}</td></tr>`).join('')}</table></div></section>`}
+function daysPanel(p){return`<section class="panel pb${tab==='days'?' show':''}"><h2>Day log</h2><p class="sub">Log each day session by session, with planned and actual times. Delays are worked out for you and feed the report.</p>
+ <div class="bar noprint"><button class="b pri" data-a="addday">+ Add day</button><button class="b" data-a="mkdays">Create days from the programme dates</button></div>
+ ${p.days.length?p.days.map((d,di)=>`<div class="dayc"><div class="dayh"><input class="dl" data-k="days.${di}.l" placeholder="Day label, e.g. Day 1 or Pre-day" value="${esc(d.l)}">${c(`days.${di}.d`,'date')}<button class="x noprint" data-a="delday" data-i="${di}" title="Remove day">&times;</button></div>
+  <div class="tw"><table><tr><th>Planned start</th><th>Actual start</th><th>Planned end</th><th>Actual end</th><th>Variance</th><th>Session or activity</th><th>Lead or speaker</th><th>Highlights and notes</th><th class="noprint"></th></tr>
+  ${d.s.map((s,si)=>`<tr><td>${c(`days.${di}.s.${si}.ps`,'time')}</td><td>${c(`days.${di}.s.${si}.as`,'time')}</td><td>${c(`days.${di}.s.${si}.pe`,'time')}</td><td>${c(`days.${di}.s.${si}.ae`,'time')}</td><td class="vr" data-c="sv:${di}:${si}"></td><td>${c(`days.${di}.s.${si}.t`)}</td><td>${c(`days.${di}.s.${si}.who`)}</td><td>${c(`days.${di}.s.${si}.n`)}</td><td class="noprint"><button class="x" data-a="delsess" data-i="${di}" data-j="${si}">&times;</button></td></tr>`).join('')}</table></div>
+  <button class="lnk noprint" data-a="addsess" data-i="${di}">+ Add session</button>
+  ${ta('What happened (summary of the day)',`days.${di}.sum`)}</div>`).join(''):'<div class="empty"><b>No days logged yet</b><br>Add each day of the programme, or create them from the start and end dates.</div>'}</section>`}
+function attPanel(p){return`<section class="panel pb${tab==='att'?' show':''}"><h2>Attendance</h2><p class="sub">Counts for each day, plus the full list of names. Both go into the report.</p>
+ <div class="tiles">${[['an','Names recorded'],['apk','Highest day'],['aavg','Average per day'],['aexp','Expected']].map(([k,l])=>`<div class="tile"><b data-c="${k}"></b><span>${l}</span></div>`).join('')}</div>
+ <h3>Counts by day</h3>
+ ${p.ad.length?`<div class="tw"><table class="mini"><tr><th>Day or session</th><th>People present</th><th>Note</th><th class="noprint"></th></tr>${p.ad.map((x,i)=>`<tr><td>${c(`ad.${i}.l`)}</td><td>${ca(`ad.${i}.n`)}</td><td>${c(`ad.${i}.note`)}</td><td class="noprint"><button class="x" data-a="delad" data-i="${i}">&times;</button></td></tr>`).join('')}</table></div>`:'<p class="m">No counts yet.</p>'}
+ <div class="bar noprint"><button class="lnk" data-a="addad">+ Add count</button><button class="lnk" data-a="fillad">Fill from the day log</button></div>
+ ${ta('Attendance notes (for example, why counts differ from the total)','anote')}
+ <h3>Names present</h3><p class="sub">One name per line. Pasting a numbered list is fine.</p>
+ ${ta('Attendance list','people','tall')}
+ <div class="bar noprint" style="margin-top:8px"><button class="b" data-a="tidy">Tidy list (remove numbers and duplicates, A to Z)</button><span class="m"><b data-c="an"></b> unique names</span></div></section>`}
+function venuePanel(p){return`<section class="panel pb${tab==='venue'?' show':''}"><h2>Venue</h2><p class="sub">Where it was held, how it was secured, and what to do differently next time.</p>
+ <div class="grid">${f('Venue or hall','venue.name')}${f('Location or address','venue.loc')}${f('Accommodation','venue.acc')}${sl('Venue changed at short notice?','venue.chg',['','No','Yes'])}${fa('Venue cost','venue.vc')}${fa('Accommodation cost','venue.ac')}${f('Setup finished at','venue.sd','time')}${f('First session planned start','venue.fs','time')}</div>
+ <p class="m" style="margin-top:-4px">Setup margin: <b data-c="setup"></b></p>
+ <h3>Venue timeline</h3><div class="tw"><table class="mini"><tr><th>Date</th><th>Step (search, inspection, deposit, balance...)</th><th>Outcome or notes</th><th class="noprint"></th></tr>
+ ${p.venue.tl.map((x,i)=>`<tr><td>${c(`venue.tl.${i}.d`,'date')}</td><td>${c(`venue.tl.${i}.w`)}</td><td>${c(`venue.tl.${i}.o`)}</td><td class="noprint"><button class="x" data-a="deltl" data-i="${i}">&times;</button></td></tr>`).join('')}</table></div>
+ <button class="lnk noprint" data-a="addtl">+ Add step</button>
+ ${ta('If the venue changed: what happened and what it cost','venue.chgd')}${ta('Backup plan','venue.bk')}${ta('Setup and cleaning notes','venue.su')}${ta('What we would do differently','venue.les')}</section>`}
+function teamBlocks(p){const F=p.fin,list=U().filter(u=>{const t=TM(p,u.id);return t.rec||F.ti[u.id]||num(F.tx[u.id])}),rest=U().filter(u=>!list.includes(u));
+ return list.map(u=>`<div class="box tb"><div class="ph"><b style="font:600 1.02rem var(--serif)">${esc(u.n)}</b><span class="sp"></span><button class="x noprint" data-a="delteam" data-u="${u.id}" title="Remove this team's spending list">&times;</button></div>
+  <div class="tiles">${[['trec','Funds received'],['tsp','Spent'],['tbal','Balance'],['tst','Status']].map(([k,l])=>`<div class="tile"><b data-c="${k}:${u.id}"></b><span>${l}</span></div>`).join('')}</div>
+  <div class="grid">${fa('Funds passed from another team (not in the payments above)',`fin.tx.${u.id}`)}</div>
+  <div class="tw"><table class="mini"><tr><th>Item</th><th>Amount</th><th class="noprint"></th></tr>${(F.ti[u.id]||[]).map((x,i)=>`<tr><td>${c(`fin.ti.${u.id}.${i}.i`)}</td><td>${ca(`fin.ti.${u.id}.${i}.a`)}</td><td class="noprint"><button class="x" data-a="delti" data-u="${u.id}" data-i="${i}">&times;</button></td></tr>`).join('')}</table></div>
+  <button class="lnk noprint" data-a="addti" data-u="${u.id}">+ Add item</button><p class="m">Unspent money returned by this team is taken from the refunds table, using the team column.</p></div>`).join('')
+ +`<div class="bar noprint"><select id="tmsel" style="max-width:300px">${opts(rest.map(u=>[u.id,u.n]),'')}</select><button class="b" data-a="addteam">+ Add team spending list</button></div>`}
+function finPanel(p){const F=p.fin,cats=[...new Set(['Venue and accommodation','Event administration',...F.p.map(x=>(x.cat||'').trim()).filter(Boolean)])];
+ return`<section class="panel pb${tab==='fin'?' show':''}"><h2>Finance</h2><p class="sub">Money in, money out and team spending. Totals, balances and the reconciliation are worked out for you.</p>
+ <div class="tiles">${[['finin','Money in'],['finout','Money out'],['finclose','Closing balance'],['cn','Contributors']].map(([k,l])=>`<div class="tile"><b data-c="${k}"></b><span>${l}</span></div>`).join('')}</div>
+ <div class="grid">${fa('Opening balance','fin.open')}${fa('Interest earned','fin.int')}</div>
+ <h3>Contributions and registrations</h3>
+ ${F.c.length?`<div class="tw"><table class="mini"><tr><th>Contributor</th><th>Type</th><th>Amount</th><th>Date</th><th class="noprint"></th></tr>${F.c.map((x,i)=>`<tr><td>${c(`fin.c.${i}.n`)}</td><td>${cs(`fin.c.${i}.ty`,['Individual','Organisation'])}</td><td>${ca(`fin.c.${i}.a`)}</td><td>${c(`fin.c.${i}.d`,'date')}</td><td class="noprint"><button class="x" data-a="delc" data-i="${i}">&times;</button></td></tr>`).join('')}</table></div>`:'<p class="m">No contributions yet.</p>'}
+ <div class="bar noprint"><button class="lnk" data-a="addc">+ Add contribution</button><span class="m">Total <b data-c="ctot"></b></span></div>
+ <details class="dets noprint"><summary>Paste many contributions at once</summary><p class="sub">One per line: the name, then the amount (for example: Ayo Bello, 10,000).</p><textarea id="bulkc" class="bulk"></textarea><button class="b" data-a="bulkc">Add these rows</button><p></p></details>
+ <h3>Departmental refunds and returned change</h3>
+ ${F.r.length?`<div class="tw"><table class="mini"><tr><th>Date</th><th>Team</th><th>Returned by</th><th>Amount</th><th class="noprint"></th></tr>${F.r.map((x,i)=>`<tr><td>${c(`fin.r.${i}.d`,'date')}</td><td>${cs(`fin.r.${i}.t`,teamOpts())}</td><td>${c(`fin.r.${i}.by`)}</td><td>${ca(`fin.r.${i}.a`)}</td><td class="noprint"><button class="x" data-a="delr" data-i="${i}">&times;</button></td></tr>`).join('')}</table></div>`:'<p class="m">No refunds yet.</p>'}
+ <div class="bar noprint"><button class="lnk" data-a="addr">+ Add refund</button><span class="m">Total <b data-c="rtot"></b></span></div>
+ <h3>Payments (money out)</h3><datalist id="cats">${cats.map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
+ ${F.p.length?`<div class="tw"><table><tr><th>Date</th><th>Recipient</th><th>Purpose</th><th>Category</th><th>Team</th><th>Amount</th><th class="noprint"></th></tr>${F.p.map((x,i)=>`<tr><td>${c(`fin.p.${i}.d`,'date')}</td><td>${c(`fin.p.${i}.to`)}</td><td>${c(`fin.p.${i}.pu`)}</td><td><input list="cats" data-k="fin.p.${i}.cat" value="${esc(x.cat)}"></td><td>${cs(`fin.p.${i}.t`,teamOpts())}</td><td>${ca(`fin.p.${i}.a`)}</td><td class="noprint"><button class="x" data-a="delp" data-i="${i}">&times;</button></td></tr>`).join('')}</table></div>`:'<p class="m">No payments yet.</p>'}
+ <div class="bar noprint"><button class="lnk" data-a="addp">+ Add payment</button><span class="m">Total <b data-c="ptot"></b>. Category groups the money-out chart. Team links the payment to that team's account below.</span></div>
+ <h3>Bank charges, taxes and deductions</h3>
+ ${F.ch.length?`<div class="tw"><table class="mini"><tr><th>Charge</th><th>Amount</th><th class="noprint"></th></tr>${F.ch.map((x,i)=>`<tr><td>${c(`fin.ch.${i}.n`)}</td><td>${ca(`fin.ch.${i}.a`)}</td><td class="noprint"><button class="x" data-a="delch" data-i="${i}">&times;</button></td></tr>`).join('')}</table></div>`:'<p class="m">No charges yet.</p>'}
+ <div class="bar noprint"><button class="lnk" data-a="addch">+ Add charge</button><span class="m">Total <b data-c="chtot"></b></span></div>
+ <h3>Reconciliation</h3><div class="box" style="padding-top:12px">
+ ${[['Opening balance','ropen'],['Add: contributions and registrations','rcon'],['Add: departmental refunds','rref'],['Add: interest earned','rint'],['Funds received','rin'],['Less: payments','rpay'],['Less: bank charges and deductions','rch'],['Closing balance','rclose']].map(([l,k])=>`<div class="rt"><span>${l}</span><b data-c="${k}"></b></div>`).join('')}
+ <div class="grid">${fa('Closing balance on the bank statement (to check against)','fin.bank')}</div><p class="m" data-c="chk"></p></div>
+ <h3>Team accounts</h3><p class="sub">What each team received, itemised spending, and what is left. Payments with a team selected appear here automatically.</p>
+ ${teamBlocks(p)}
+ ${ta('Notes to include in the financial report','fin.note')}</section>`}
+function reviewPanel(p,fxs){const R=p.rv,cf=S.cfg;return`<section class="panel pb${tab==='review'?' show':''}"><h2>Post-programme review</h2><p class="sub">Complete within 3 to 5 days. Focus on systems, not blame.</p>
  <h3>1. Delivery</h3>
  <div class="rt"><span>Started on time?</span>${cs('rv.start',['','Yes','No'])}</div><div class="rt"><span>Ended on time?</span>${cs('rv.end',['','Yes','No'])}</div><div class="rt"><span>Objective met?</span>${cs('rv.met',['','Fully','Partly','No'])}</div>
- <div class="grid">${f('Actual attendance','rv.aatt')}</div>${ta('If late or over time: by how long, and why?','rv.late')}
+ <div class="grid">${f('Actual attendance','rv.aatt')}</div><p class="m noprint" style="margin-top:-4px">The Attendance tab has <b data-c="an"></b> unique names and a highest day of <b data-c="apk"></b>. <button class="lnk" data-a="useatt">Use unique names</button></p>${ta('If late or over time: by how long, and why?','rv.late')}
  <h3>2. Ratings (1 = poor, 5 = excellent)</h3>${cf.areas.map(a=>`<div class="rt"><span>${esc(a.n)}</span>${cs(`rv.rate.${a.id}`,['','1','2','3','4','5'])}</div>`).join('')}
  <h3>3. Department reports</h3><div class="tw"><table><tr><th>Department</th><th>What worked</th><th>What failed or was late</th></tr>
  ${U().map(u=>`<tr><td><b>${esc(u.n)}</b></td><td>${c(`rv.ur.${u.id}.w`)}</td><td>${c(`rv.ur.${u.id}.f`)}</td></tr>`).join('')}</table></div>
  <h3>4. Issues and fixes</h3><div class="tw"><table><tr><th>Issue</th><th>Root cause</th><th>Fix for next time</th><th>Owner</th><th>Deadline</th><th>Repeat</th><th>Fixed</th><th class="noprint"></th></tr>
  ${R.issues.map((x,i)=>`<tr><td>${c(`rv.issues.${i}.issue`)}</td><td>${c(`rv.issues.${i}.cause`)}</td><td>${c(`rv.issues.${i}.fix`)}</td><td>${c(`rv.issues.${i}.owner`)}</td><td>${c(`rv.issues.${i}.deadline`,'date')}</td><td>${cb(`rv.issues.${i}.repeat`)}</td><td>${cb(`rv.issues.${i}.done`)}</td><td class="noprint"><button class="x" data-a="delissue" data-i="${i}">&times;</button></td></tr>`).join('')}</table></div>
  <button class="lnk noprint" data-a="addissue">+ Add issue</button><p class="m">Unfixed items appear on the home screen and in the next programme's plan.</p>
- <h3>5. Resources</h3><div class="grid">${f('Budget planned','rv.bp')}${f('Actual spend','rv.ba')}</div>${ta('Volunteer workload: was it fair? Was anyone overloaded?','rv.wl')}
+ <h3>5. Resources</h3><div class="grid">${f('Budget planned','rv.bp')}${f('Actual spend','rv.ba')}</div><p class="m noprint" style="margin-top:-4px">The Finance tab shows <b data-c="outuse"></b> paid out. <button class="lnk" data-a="usefin">Use as actual spend</button></p>${ta('Volunteer workload: was it fair? Was anyone overloaded?','rv.wl')}
  <h3>6. Member feedback</h3>${ta('Key points from the feedback form','rv.fb')}
  <h3>7. Lessons</h3>${ta('Keep doing','rv.keep')}${ta('Change','rv.chg')}${ta('Updates for the checklist template','rv.tpl')}
  <h3>Sign-off</h3><div class="grid">${f('Operations Director','rv.by')}${f('Date shared with leadership','rv.shared','date')}</div>
  <div class="ck noprint" style="margin-top:14px">${cb('rv.done')}<span><b>Mark review as completed</b> (counts in the home statistics)</span></div></section>`}
-/* settings */
+function reportPanel(p){return`<section class="panel rp${tab==='report'?' show':''}"><div class="noprint"><h2>Report</h2><p class="sub">Built automatically from every tab. Print it, save it as a PDF, or download it as a single file to share.</p>
+ <div class="bar"><div class="tabs sm">${[['prog','Programme report'],['fin','Financial report']].map(([k,l])=>`<button class="tab${rtab===k?' on':''}" data-a="rtab" data-t="${k}">${l}</button>`).join('')}</div><span class="sp"></span><button class="b" data-a="dlrep">Download report</button><button class="b pri" data-a="print">Print / Save PDF</button></div>
+ ${ta('Overview paragraph (optional: leave blank and one is written for you)','sum')}</div>
+ <div id="rptwrap" class="sheet">${reportHTML(p)}</div></section>`}
+function detail(p){const g=prog(p),fxs=openFixes(p.id);
+ return`<div class="bar noprint"><button class="b" data-a="back">&larr; Programmes</button><span class="sp"></span><button class="b" data-a="dup">Duplicate</button><button class="b" data-a="expprog">Export</button><button class="b pri" data-a="print">Print / Save PDF</button><button class="b dng" data-a="del">Delete</button></div>
+ <div class="pnt">${esc(S.cfg.org)} &middot; Operations Directorate</div>
+ <input class="title" data-k="name" placeholder="Programme name" value="${esc(p.name)}">
+ <div class="tabbar noprint"><div class="tabs">${TABS.map(([k,l])=>`<button class="tab${tab===k?' on':''}" data-a="tab" data-t="${k}">${l}${HAS[k]&&HAS[k](p)?'<i class="dot"></i>':''}</button>`).join('')}</div></div>
+ ${planPanel(p,fxs,g)}${tasksPanel(p)}${daysPanel(p)}${attPanel(p)}${venuePanel(p)}${finPanel(p)}${reviewPanel(p,fxs)}${reportPanel(p)}`}
+/* ---------- report ---------- */
+const para=s=>String(s||'').split(/\n+/).map(x=>x.trim()).filter(Boolean).map(x=>`<p>${esc(x)}</p>`).join('');
+const row=(cells,cls)=>`<tr${cls?` class="${cls}"`:''}>${cells.map(x=>Array.isArray(x)?`<td class="${x[1]}">${x[0]}</td>`:`<td>${x}</td>`).join('')}</tr>`;
+const tbl=(head,rows)=>`<div class="tw"><table class="rtbl"><thead><tr>${head.map(h=>Array.isArray(h)?`<th class="${h[1]}">${esc(h[0])}</th>`:`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
+const secs=a=>{let n=0;return a.filter(Boolean).map(([t,b])=>{n++;return`<section class="r-sec"><h2><span>${pad(n)}</span>${esc(t)}</h2>${b}</section>`}).join('')};
+const bar=(a,b)=>`<span class="sh"><i style="width:${b?Math.min(100,100*a/b):0}%"></i></span>`;
+const kv=r=>tbl(['Item','Detail'],r.filter(Boolean).map(([a,b])=>row([esc(a),esc(b)])));
+const tiles=a=>a.length?`<div class="tiles">${a.map(([v,l])=>`<div class="tile"><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join('')}</div>`:'';
+function rHead(p,kind){const meta=[['Period',rng(p)],['Venue',[p.venue.name,p.venue.loc].filter(Boolean).join(', ')],['Format',p.format],['Programme lead',p.lead],['Prepared by',p.rv.by],['Date',fmt(iso(new Date()))]].filter(x=>x[1]);
+ return`<header class="r-head"><div class="r-org">${esc(S.cfg.org)} &middot; ${kind}</div><h1>${esc(p.name||'Untitled programme')}</h1>${p.theme?`<div class="r-sub">${esc(p.theme)}</div>`:''}<dl class="r-meta">${meta.map(([k,v])=>`<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></header>`}
+const rFoot=(p,kind)=>`<footer class="r-foot"><span>${esc(S.cfg.org)} &middot; ${kind}</span><span>${esc(p.name||'')}</span></footer>`;
+function progReport(p){const R=p.rv,V=p.venue,F=FN(p),nm=names(p),cf=S.cfg,head=rHead(p,'Programme report');
+ const dayHas=p.days.filter(d=>d.l||d.sum||d.s.some(s=>s.t||s.ps||s.as||s.pe||s.ae));
+ const sessN=sum(p.days.map(d=>d.s.filter(s=>s.t||s.ps||s.as).length)),adv=p.ad.map(x=>num(x.n)).filter(Boolean),peak=adv.length?Math.max(...adv):0;
+ const rates=cf.areas.map(a=>[a.n,+R.rate[a.id]]).filter(x=>x[1]),avg=rates.length?(sum(rates.map(x=>x[1]))/rates.length).toFixed(1):'';
+ /* overview */
+ let auto=(p.name||'This programme')+(p.theme?', themed '+p.theme+',':'')+(rng(p)?(p.end&&p.end!==p.date?' ran from '+fmt(p.date)+' to '+fmt(p.end):' took place on '+fmt(p.date)):' took place')+(V.name?' at '+V.name+(V.loc?', '+V.loc:''):'')+'.';
+ if(p.ad.some(x=>num(x.n)))auto+=' Attendance was '+p.ad.filter(x=>num(x.n)).map(x=>x.n+(x.l?' on '+x.l:'')).join(', ')+(nm.length?', with '+nm.length+' different people recorded in total':'')+'.';
+ else if(nm.length)auto+=' '+nm.length+' people were recorded as present.';
+ if(F.has)auto+=' The programme account received '+M(F.inn)+', paid out '+M(F.out)+' and closed at '+M(F.close)+'.';
+ const dv=[['Started on time',R.start],['Ended on time',R.end],['Objective met',R.met],['Actual attendance',R.aatt]].filter(x=>x[1]);
+ const kp=[];if(p.days.length)kp.push([String(p.days.length),'Days logged']);if(sessN)kp.push([String(sessN),'Sessions logged']);if(nm.length||num(R.aatt))kp.push([String(nm.length||num(R.aatt)),'People present']);if(peak)kp.push([String(peak),'Highest day']);if(avg)kp.push([avg+' / 5','Average rating']);
+ const s1=['Overview',(para(p.sum)||`<p>${esc(auto)}</p>`)+(p.obj?`<div class="callout"><b>Objective</b>${esc(p.obj)}</div>`:'')+tiles(kp)+(dv.length?kv(dv.map(x=>[x[0],x[1]])):'')+(R.late?`<h3>Time and overruns</h3>${para(R.late)}`:'')];
+ /* venue */
+ const vAmt=num(V.vc)+num(V.ac),mg=dm(V.sd,V.fs);
+ const vHas=Object.entries(V).some(([k,v])=>k==='tl'?v.some(x=>x.w||x.d):!!v);
+ const s2=vHas?['The venue',kv([V.name&&['Venue',V.name],V.loc&&['Location',V.loc],V.acc&&['Accommodation',V.acc],num(V.vc)&&['Venue cost',M(num(V.vc))],num(V.ac)&&['Accommodation cost',M(num(V.ac))],(num(V.vc)&&num(V.ac))&&['Venue and accommodation together',M(vAmt)+(F.out?' ('+pct(vAmt,F.out)+' of money out)':'')],V.chg&&['Changed at short notice',V.chg],mg!=null&&['Setup finished',hm(V.sd)+', '+(mg>=0?mg+' minutes before':Math.abs(mg)+' minutes after')+' the '+hm(V.fs)+' start'+(mg<15?' (target: at least 15 minutes)':'')]])+(V.tl.some(x=>x.w||x.d)?`<h3>Timeline</h3>${tbl(['Date','Step','Outcome'],V.tl.filter(x=>x.w||x.d||x.o).map(x=>row([esc(x.d?fmt(x.d):''),esc(x.w),esc(x.o)])))}`:'')+(V.chgd?`<h3>The change of venue</h3>${para(V.chgd)}`:'')+(V.su?`<h3>Setup and cleaning</h3>${para(V.su)}`:'')+(V.bk?`<h3>Backup plan</h3>${para(V.bk)}`:'')+(V.les?`<div class="callout"><b>Lesson</b>${esc(V.les)}</div>`:'')]:null;
+ /* days */
+ const s3=dayHas.length?[(p.name||'Programme')+' in detail',dayHas.map((d,i)=>{const ss=d.s.filter(s=>s.t||s.ps||s.as||s.pe||s.ae||s.who||s.n);
+  return`<div class="r-day"><h3>${esc(d.l||'Day '+(i+1))}${d.d?' &middot; '+esc(fmtL(d.d)):''}</h3>${ss.length?tbl(['Planned','Actual','Variance','Session','Notes'],ss.map(s=>{const v=sessVar(s);return row([esc(span(s.ps,s.pe)),esc(span(s.as,s.ae)),`<span${v.s==='bad'?' class="tag bad"':v.s==='ok'?' class="tag ok"':''}>${esc(v.t)}</span>`,esc(s.t)+(s.who?`<small>${esc(s.who)}</small>`:''),esc(s.n)])})):''}${para(d.sum)}</div>`}).join('')]:null;
+ /* attendance */
+ const s4=(p.ad.some(x=>x.n||x.l)||nm.length||p.anote)?['Attendance',(p.ad.some(x=>x.n||x.l)?tbl(['Day or session',['People present','n'],'Note'],[...p.ad.filter(x=>x.n||x.l).map(x=>row([esc(x.l),[esc(x.n),'n'],esc(x.note)])),...(adv.length>1?[row(['Highest day',[String(peak),'n'],''],'tot')]:[])]):'')+para(p.anote)+(nm.length?`<h3>Attendance list (${nm.length} ${nm.length===1?'person':'people'})</h3><ol class="names">${nm.map(n=>`<li>${esc(n)}</li>`).join('')}</ol>`:'')]:null;
+ /* lessons */
+ const dep=U().map(u=>[u.n,(R.ur[u.id]||{}).w,(R.ur[u.id]||{}).f]).filter(x=>x[1]||x[2]),iss=R.issues.filter(x=>x.issue||x.fix||x.cause);
+ const lessonsBody=(rates.length?`<h3>Ratings</h3>${tbl(['Area',['Rating (of 5)','n']],[...rates.map(x=>row([esc(x[0]),[String(x[1]),'n']])),row(['Average',[avg,'n']],'tot')])}`:'')
+  +(dep.length?`<h3>Department reports</h3>${tbl(['Department','What worked','What failed or was late'],dep.map(x=>row([`<b>${esc(x[0])}</b>`,esc(x[1]),esc(x[2])])))}`:'')
+  +(iss.length?`<h3>Issues and fixes</h3>${tbl(['Issue','Root cause','Fix for next time','Owner','Due','Status'],iss.map(x=>row([esc(x.issue),esc(x.cause),esc(x.fix),esc(x.owner),esc(x.deadline?fmt(x.deadline):''),`<span class="tag ${x.done?'ok':'bad'}">${x.done?'Fixed':'Open'}</span>${x.repeat?' <span class="tag">Repeat</span>':''}`])))}`:'')
+  +(R.wl?`<h3>Volunteer workload</h3>${para(R.wl)}`:'')+(R.fb?`<h3>Member feedback</h3>${para(R.fb)}`:'')
+  +[['Keep doing',R.keep],['Change',R.chg],['Updates for the checklist template',R.tpl]].filter(x=>x[1]).map(x=>`<div class="callout"><b>${x[0]}</b>${esc(x[1])}</div>`).join('');
+ const s5=lessonsBody?['Lessons and next steps',lessonsBody]:null;
+ const body=secs([s1,s2,s3,s4,s5]);
+ const sign=(R.by||R.shared)?`<div class="signs"><div><b>${esc(R.by||'')}</b>Operations Director</div><div><b>${esc(R.shared?fmt(R.shared):'')}</b>Date shared with leadership</div></div>`:'';
+ return head+(body||'<div class="r-empty">Nothing to report yet. Fill in the Day log, Attendance, Venue and Review tabs and this report builds itself.</div>')+sign+rFoot(p,'Programme report')}
+function finReport(p){const f=p.fin,F=FN(p),C=CS(p),head=rHead(p,'Financial report');
+ if(!F.has)return head+'<div class="r-empty">No financial records yet. Add contributions, payments and bank charges in the Finance tab.</div>'+rFoot(p,'Financial report');
+ const np=f.p.filter(x=>num(x.a)),rcp=new Set(np.map(x=>(x.to||'').trim().toLowerCase()).filter(Boolean)).size,pl=(n,w)=>n+' '+w+(n===1?'':'s');
+ const teams=U().map(u=>({u,...TM(p,u.id)})),rep=teams.filter(t=>t.hasItems),shown=teams.filter(t=>t.rec||t.sp||t.hasItems);
+ const rt={rec:sum(rep.map(t=>t.rec)),sp:sum(rep.map(t=>t.sp)),bal:sum(rep.map(t=>t.bal)),ret:sum(rep.map(t=>t.ret))};
+ const isT=x=>x.t&&x.t!=='direct',payNoRep=sum(f.p.filter(x=>isT(x)&&!(teams.find(t=>t.u.id===x.t)||{}).hasItems).map(x=>num(x.a))),payRep=sum(f.p.filter(x=>isT(x)&&(teams.find(t=>t.u.id===x.t)||{}).hasItems).map(x=>num(x.a))),payDir=sum(f.p.filter(x=>x.t==='direct').map(x=>num(x.a))),payFree=sum(f.p.filter(x=>!x.t).map(x=>num(x.a)));
+ let s1t=(p.name||'The programme')+' took in '+M(F.inn)+(C.n?' from '+pl(C.n,'recorded contributor'):'')+((F.rf||F.it)?(C.n?', departmental refunds and interest':' including refunds and interest'):'')+', paid out '+M(F.out)+' and closed with '+M(F.close)+' in the account.'+(rng(p)?' The figures cover '+rng(p)+'.':'');
+ const s1=['Financial position at a glance',`<p>${esc(s1t)}</p>`+tiles([[M(F.inn),'Money in'],[M(F.out),'Money out'],[M(F.close),'Closing balance'],...(C.n?[[String(C.n),'Recorded contributors']]:[])])+kv([['Money in',M(F.inn)],C.n&&['Of which contributions'+' ('+pl(C.n,'recorded contributor')+')',M(F.c)],F.rf&&['Of which departmental refunds returned',M(F.rf)],F.it&&['Of which interest earned',M(F.it)],C.n&&['Largest single contribution',M(C.max)],C.n&&['Most common contribution',M(C.mode)+' ('+C.mc+' of the '+C.n+')'],np.length&&['Paid to teams and vendors',M(F.pay)+' in '+pl(np.length,'payment')+(rcp?' to '+pl(rcp,'recipient'):'')],F.ch&&['Bank charges, taxes and deductions',M(F.ch)+' ('+pct(F.ch,F.inn)+' of money in)'],['Total money out',M(F.out)],['Closing balance',M(F.close)],rep.length&&['Position of the '+pl(rep.length,'team')+' that reported their own spending',rt.bal<0?M(Math.abs(rt.bal))+' overspent':M(rt.bal)+' unspent']])+para(f.note)];
+ const top=C.tiers[C.tiers.length-1];
+ const s2=(C.n||F.rf||F.it)?['Money in',(C.n?`<p>${esc(`The register lists ${pl(C.n,'contribution')} totalling ${M(C.t)}.`+(top.n?` ${pl(top.n,'gift')} of ${M(top.a)} or more supplied ${pct(top.t,C.t)} of that sum.`:'')+` ${C.ind} ${C.ind===1?'entry is an individual':'entries are individuals'} and ${C.org} ${C.org===1?'is an organisation':'are organisations'}${C.org?`; the organisations gave ${M(C.orgT)} between them`:''}. The average gift was ${M(C.avg)} and the middle gift was ${M(C.med)}.`)}</p>`+tbl(['Gift size',['Contributors','n'],['Share of contributors','n'],['Amount','n'],['Share of money','n']],[...C.tiers.filter(t=>t.n).map(t=>row([esc(tierLabel([t.a,t.b])),[String(t.n),'n'],[pct(t.n,C.n),'n'],[M(t.t),'n'],[pct(t.t,C.t),'n']])),row(['Total',[String(C.n),'n'],['100.0%','n'],[M(C.t),'n'],['100.0%','n']],'tot')]):'')
+  +`<h3>Where the money in came from</h3>`+tbl(['Source',['Amount','n']],[C.n&&row(['Contributions and registrations',[M(F.c),'n']]),F.rf&&row(['Departmental refunds and returned change',[M(F.rf),'n']]),F.it&&row(['Interest earned',[M(F.it),'n']]),row(['Total money in',[M(F.inn),'n']],'tot')].filter(Boolean))
+  +(f.r.some(x=>num(x.a))?`<h3>Departmental refunds</h3>${tbl(['Date','Team','Returned by',['Amount','n']],[...f.r.filter(x=>num(x.a)).map(x=>row([esc(x.d?fmt(x.d):''),esc((U().find(u=>u.id===x.t)||{}).n||''),esc(x.by),[M(num(x.a)),'n']])),row(['Total','','',[M(F.rf),'n']],'tot')])}`:'')]:null;
+ const pcs=PC(p),dated=[...np].sort((a,b)=>(a.d||'9999').localeCompare(b.d||'9999')),big=np.length?np.reduce((m,x)=>num(x.a)>num(m.a)?x:m,np[0]):null;
+ const s3=np.length?['Money out',`<p>${esc(`${pl(np.length,'payment')}${rcp?' to '+pl(rcp,'recipient'):''} totalling ${M(F.pay)}.`+(pcs.length?` The largest category was ${pcs[0][0]} at ${M(pcs[0][1])}, ${pct(pcs[0][1],F.pay)} of the money paid out.`:'')+` The average payment was ${M(F.pay/np.length)}.`+(big?` The largest was ${M(num(big.a))}${big.to?', paid to '+big.to:''}${big.d?' on '+fmt(big.d):''}.`:''))}</p>`+tbl(['Category',['Amount','n'],['Share','n']],[...pcs.map(([k,v])=>row([esc(k),[M(v),'n'],[bar(v,F.pay)+pct(v,F.pay),'n']])),row(['Total paid to teams and vendors',[M(F.pay),'n'],['100.0%','n']],'tot')])+`<h3>Payment register</h3>`+tbl(['Date','Recipient','Purpose',['Amount','n']],[...dated.map(x=>row([esc(x.d?fmt(x.d):''),esc(x.to),esc(x.pu||x.cat||''),[M(num(x.a)),'n']])),row(['Total','','',[M(F.pay),'n']],'tot')])]:null;
+ const s4=['Bank charges and account reconciliation',(f.ch.some(x=>num(x.a))?`<p>${esc(`Bank charges, taxes and deductions cost ${M(F.ch)}, or ${pct(F.ch,F.inn)} of the money received.`)}</p>`+tbl(['Charge',['Amount','n']],[...f.ch.filter(x=>num(x.a)).map(x=>row([esc(x.n),[M(num(x.a)),'n']])),row(['Total',[M(F.ch),'n']],'tot')]):'')+`<h3>Account reconciliation</h3>`+tbl(['Item',['Amount','n']],[row(['Opening balance',[M(F.op),'n']]),row(['Add: contributions and registrations',[M(F.c),'n']]),F.rf&&row(['Add: departmental refunds and returned change',[M(F.rf),'n']]),F.it&&row(['Add: interest earned',[M(F.it),'n']]),row(['Funds received',[M(F.inn),'n']],'tot'),row(['Funds available (with opening balance)',[M(F.op+F.inn),'n']]),row(['Less: direct disbursements',[M(-F.pay),'n']]),row(['Less: bank charges, taxes and deductions',[M(-F.ch),'n']]),row(['Closing balance',[M(F.close),'n']],'tot')].filter(Boolean))+(String(f.bank||'').trim()!==''?`<p>${esc(r2(F.close-num(f.bank))===0?'The closing balance matches the bank statement ('+M(num(f.bank))+').':'The bank statement shows '+M(num(f.bank))+', which differs from the records by '+M(Math.abs(F.close-num(f.bank)))+'.')}</p>`:'')];
+ const s5=shown.length?['Team financial reports',`<p>${esc('Each team’s money is set out separately: what the Finance Team paid it, what the team reports spending, and what is left.')}</p>`+shown.map(t=>`<h3>${esc(t.u.n)}${t.st?` <span class="tag ${t.st==='Deficit'||t.st==='No spending report'?'bad':'ok'}">${esc(t.st)}</span>`:''}</h3>`+(t.hasItems?`<p>${esc(`${t.u.n} received ${M(t.rec)} and spent ${M(t.sp)}, `+(r2(t.bal)<0?'leaving a deficit of '+M(Math.abs(t.bal))+'.':r2(t.bal)===0?'leaving nothing unspent.':'leaving '+M(t.bal)+(t.ret?', of which '+M(t.ret)+' has been returned to Finance.':'.')))}</p>`+tbl(['Item',['Amount','n']],[...t.items.filter(x=>num(x.a)||x.i).map(x=>row([esc(x.i),[M(num(x.a)),'n']])),row(['Total spent',[M(t.sp),'n']],'tot')]):`<p>${esc(`${t.u.n} received ${M(t.rec)}. No spending report was recorded.`)}</p>`)).join('')]:null;
+ const s6=(rep.length||F.pay)?['Consolidated financial view',(rep.length?`<p>${esc(`The ${pl(rep.length,'team')} that reported their own spending ${rt.bal<0?'overspent the funds they received by '+M(Math.abs(rt.bal)):'spent '+M(rt.sp)+' of the '+M(rt.rec)+' they received'} in total`+((payNoRep+payFree)?`, and ${M(payNoRep+payFree)} of the ${M(F.pay)} paid out (${pct(payNoRep+payFree,F.pay)}) has no spending report behind it.`:'.'))}</p>`+tbl(['Team',['Funds received','n'],['Spent','n'],['Balance','n'],'Status'],[...rep.map(t=>row([esc(t.u.n),[M(t.rec),'n'],[M(t.sp),'n'],[M(t.bal),'n'],`<span class="tag ${t.st==='Deficit'?'bad':'ok'}">${esc(t.st)}</span>`])),row(['Total',[M(rt.rec),'n'],[M(rt.sp),'n'],[M(rt.bal),'n'],''],'tot')]):'')+`<h3>Finance Team payments, by what backs them</h3>`+tbl(['Category',['Amount','n'],['Share','n']],[payDir&&row(['Paid directly to vendors (venue, accommodation)',[M(payDir),'n'],[pct(payDir,F.pay),'n']]),payRep&&row(['Team budgets with a spending report',[M(payRep),'n'],[pct(payRep,F.pay),'n']]),payNoRep&&row(['Team budgets with no spending report',[M(payNoRep),'n'],[pct(payNoRep,F.pay),'n']]),payFree&&row(['Payments not tied to a team (administration, logistics, other)',[M(payFree),'n'],[pct(payFree,F.pay),'n']]),row(['Total direct disbursements',[M(F.pay),'n'],['100.0%','n']],'tot')].filter(Boolean))]:null;
+ return head+secs([s1,s2,s3,s4,s5,s6])+rFoot(p,'Financial report')}
+function reportHTML(p){return`<div class="rpt rp-prog${rtab==='prog'?' show':''}">${progReport(p)}</div><div class="rpt rp-fin pb${rtab==='fin'?' show':''}">${finReport(p)}</div>`}
+/* ---------- settings ---------- */
 const ci=k=>`<input data-k="${k}" value="${esc(get(S.cfg,k))}">`;
 const lst=(t,sub,l,path)=>`<div class="box"><h2>${t}</h2><p class="sub">${sub}</p>${S.cfg[l].map((x,i)=>`<div class="lr">${ci(path(i))}<button class="x" data-a="cfgdel" data-l="${l}" data-i="${i}">&times;</button></div>`).join('')}<button class="lnk" data-a="cfgadd" data-l="${l}">+ Add</button></div>`;
 function settings(){return`<h1>Settings</h1><p class="sub">Everything here is editable. Departments, rating areas and options apply across all programmes.</p>
- ${lst('Departments','They appear in contacts, task owners, briefing and review tables.','units',i=>`units.${i}.n`)}
+ <div class="box"><h2>Report details</h2><p class="sub">Shown on report letterheads, and used for all money amounts.</p><div class="grid"><label class="f">Organisation name${ci('org')}</label><label class="f">Currency symbol${ci('cur')}</label></div></div>
+ ${lst('Departments','They appear in contacts, task owners, briefing, review and team accounts.','units',i=>`units.${i}.n`)}
  ${lst('Review rating areas','The areas you score from 1 to 5 after each programme.','areas',i=>`areas.${i}.n`)}
  ${lst('Programme formats','Choices for the Format field.','formats',i=>`formats.${i}`)}
  ${lst('Task statuses','The first one is used for new tasks.','statuses',i=>`statuses.${i}`)}
@@ -187,26 +442,38 @@ function settings(){return`<h1>Settings</h1><p class="sub">Everything here is ed
  ${S.cfg.tpl.map((ph,pi)=>`<div class="ph">${ci(`tpl.${pi}.p`)}<button class="x" data-a="tpldelph" data-p="${pi}">&times;</button></div>`+ph.i.map((t,ii)=>`<div class="lr">${ci(`tpl.${pi}.i.${ii}`)}<button class="x" data-a="tpldelitem" data-p="${pi}" data-i="${ii}">&times;</button></div>`).join('')+`<button class="lnk" data-a="tpladditem" data-p="${pi}">+ Add item</button>`).join('')}
  <div><button class="b" style="margin-top:16px" data-a="tpladdph">+ Add phase</button></div></div>
  <button class="b dng" data-a="reset">Reset settings to defaults</button>`}
+/* ---------- render ---------- */
 function render(){const y=scrollY,h=location.hash,m=h.match(/^#\/p\/(.+)$/);
  cur=m?S.programmes.find(p=>p.id===m[1])||null:null;view=h==='#/settings'?'set':cur?'prog':'home';
  $('#app').innerHTML=view==='set'?settings():cur?detail(cur):home();
+ document.body.classList.toggle('rep',view==='prog'&&tab==='report');
  $('#n1').className=view==='set'?'':'on';$('#n2').className=view==='set'?'on':'';
- document.title=cur&&cur.name?cur.name+' | Driven Operations Hub':'Driven Operations Hub';fit();scrollTo(0,y)}
-const fit=()=>document.querySelectorAll('textarea').forEach(t=>{t.style.height='auto';t.style.height=t.scrollHeight+'px'});
+ document.title=cur&&cur.name?cur.name+' | Driven Operations Hub':'Driven Operations Hub';fit();calc();scrollTo(0,y)}
+const fit=()=>document.querySelectorAll('textarea').forEach(t=>{t.style.height='auto';const h=t.scrollHeight;t.style.height=(t.classList.contains('tall')?Math.min(h,380):h)+'px'});
+function dl(name,type,data){const u=URL.createObjectURL(new Blob([data],{type})),l=document.createElement('a');l.href=u;l.download=name;document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),1500)}
+function dlReport(){const old=rtab;const inner=reportHTML(cur),css=document.querySelector('style').textContent;
+ const light=':root{--bg:#f4f5f8;--card:#fff;--ink:#0f172a;--mute:#66728c;--line:#e3e6ee;--soft:#eef0f6;--acc:#1c2a4e;--gold:#b8862b;--good:#2b7a4b;--bad:#b4381f}body{background:var(--bg)}.rpt{display:block!important}.rpt+.rpt{margin-top:40px;padding-top:30px;border-top:1px dashed var(--line)}main{padding-top:22px}.dlbar{max-width:1000px;margin:18px auto 0;padding:0 18px;display:flex;justify-content:space-between;align-items:center}';
+ const html=`<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc((cur.name||'Programme')+' | Report')}</title><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"><style>${css}\n${light}</style></head><body><div class="dlbar noprint"><span class="m">${esc(S.cfg.org)} Operations Hub report</span><button class="b pri" onclick="window.print()">Print / Save PDF</button></div><main><div class="sheet">${inner}</div></main></body></html>`;
+ rtab=old;dl(slug(cur.name)+'-report.html','text/html',html)}
 addEventListener('hashchange',()=>{scrollTo(0,0);render()});addEventListener('beforeprint',fit);
 document.addEventListener('input',e=>{const t=e.target;
  if(t.id==='srch'){q=t.value;$('#list').innerHTML=list();return}
  const k=t.dataset.k,R=cur||(view==='set'?S.cfg:null);if(!k||!R)return;
  set(R,k,t.type==='checkbox'?t.checked:t.value);save();if(t.tagName==='TEXTAREA')fit();
- if(cur&&k.startsWith('cl.')){const g=prog(cur);$('#pb').style.width=g.pc+'%';$('#pt').textContent=g.d+' of '+g.t+' done ('+g.pc+'%)'}});
+ if(cur&&k.startsWith('cl.')){const g=prog(cur);$('#pb').style.width=g.pc+'%';$('#pt').textContent=g.d+' of '+g.t+' done ('+g.pc+'%)'}
+ if(cur&&k==='sum'){const w=$('#rptwrap');if(w)w.innerHTML=reportHTML(cur)}
+ calc()});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b||b.tagName==='INPUT')return;
- const d=b.dataset,a=d.a,C=S.cfg,go=()=>{save();render()};
+ const d=b.dataset,a=d.a,C=S.cfg,go=()=>{save();render()},fin=cur&&cur.fin;
  if(a==='new'){const p=newProg();S.programmes.push(p);save();tab='plan';location.hash='#/p/'+p.id}
  else if(a==='open'){tab='plan';location.hash='#/p/'+d.id}
  else if(a==='back')location.hash='#/';
  else if(a==='tab'){tab=d.t;render()}
+ else if(a==='rtab'){rtab=d.t;render()}
  else if(a==='print')print();
- else if(a==='dup'){const p=JSON.parse(JSON.stringify(cur));p.id=uid();p.created=Date.now();p.name=(p.name||'Programme')+' (copy)';p.date='';p.cl.forEach(x=>x.i.forEach(i=>i.d=false));p.tasks.forEach(t=>t.status=C.statuses[0]||'');p.rv=newRv();S.programmes.push(p);save();tab='plan';location.hash='#/p/'+p.id}
+ else if(a==='dlrep')dlReport();
+ else if(a==='dup'){const p=JSON.parse(JSON.stringify(cur));p.id=uid();p.created=Date.now();p.name=(p.name||'Programme')+' (copy)';p.date='';p.end='';p.cl.forEach(x=>x.i.forEach(i=>i.d=false));p.tasks.forEach(t=>t.status=C.statuses[0]||'');
+  p.days.forEach(x=>{x.id=uid();x.d='';x.sum='';x.s.forEach(s=>{s.as='';s.ae='';s.n=''})});p.ad=[];p.people='';p.anote='';p.venue=newVenue();p.fin=newFin();p.sum='';p.rv=newRv();S.programmes.push(p);save();tab='plan';location.hash='#/p/'+p.id}
  else if(a==='del'){if(confirm('Delete this programme and its review? This cannot be undone.')){S.programmes=S.programmes.filter(p=>p!==cur);save();location.hash='#/'}}
  else if(a==='addtask'){cur.tasks.push(task());go()}
  else if(a==='deltask'){cur.tasks.splice(+d.i,1);go()}
@@ -216,6 +483,41 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b
  else if(a==='delitem'){cur.cl[+d.p].i.splice(+d.i,1);go()}
  else if(a==='addph'){const s=prompt('Name of the new phase (e.g. 1 week before)');if(s&&s.trim()){cur.cl.push({p:s.trim(),i:[]});go()}}
  else if(a==='delph'){if(confirm('Remove this phase and its items?')){cur.cl.splice(+d.p,1);go()}}
+ /* day log */
+ else if(a==='addday'){cur.days.push(newDay('Day '+(cur.days.length+1)));go()}
+ else if(a==='delday'){if(confirm('Remove this day and its sessions?')){cur.days.splice(+d.i,1);go()}}
+ else if(a==='addsess'){cur.days[+d.i].s.push(sess());go()}
+ else if(a==='delsess'){cur.days[+d.i].s.splice(+d.j,1);go()}
+ else if(a==='mkdays'){if(!cur.date){alert('Set a start date on the Plan tab first.');return}
+  const end=cur.end&&cur.end>=cur.date?cur.end:cur.date,have=new Set(cur.days.map(x=>x.d));let n=0;
+  for(let x=new Date(cur.date+'T00:00');iso(x)<=end&&n<21;x.setDate(x.getDate()+1)){const s=iso(x);if(have.has(s))continue;const dd=newDay();dd.d=s;dd.l=x.toLocaleDateString(undefined,{weekday:'long'});cur.days.push(dd);n++}
+  cur.days.sort((p,q)=>(p.d||'9').localeCompare(q.d||'9'));go()}
+ /* attendance */
+ else if(a==='addad'){cur.ad.push({l:'',n:'',note:''});go()}
+ else if(a==='delad'){cur.ad.splice(+d.i,1);go()}
+ else if(a==='fillad'){const have=new Set(cur.ad.map(x=>x.l));cur.days.forEach((x,i)=>{const l=x.l||'Day '+(i+1);if(!have.has(l))cur.ad.push({l,n:'',note:''})});go()}
+ else if(a==='tidy'){cur.people=names(cur).sort((x,y)=>x.localeCompare(y)).join('\n');go()}
+ else if(a==='useatt'){const n=names(cur).length;if(n){cur.rv.aatt=String(n);go()}}
+ /* venue */
+ else if(a==='addtl'){cur.venue.tl.push({d:'',w:'',o:''});go()}
+ else if(a==='deltl'){cur.venue.tl.splice(+d.i,1);go()}
+ /* finance */
+ else if(a==='addc'){fin.c.push({n:'',ty:'Individual',a:'',d:''});go()}
+ else if(a==='delc'){fin.c.splice(+d.i,1);go()}
+ else if(a==='bulkc'){const ta_=$('#bulkc');let n=0;(ta_?ta_.value:'').split('\n').forEach(l=>{l=l.trim();if(!l)return;const m=l.match(/^(.*?)[\s,;]+\D{0,3}\s*([\d,]+(?:\.\d+)?)\s*$/);if(m&&m[1].trim()){fin.c.push({n:m[1].replace(/[,;\s]+$/,''),ty:'Individual',a:m[2].replace(/,/g,''),d:''});n++}});
+  if(n){go();alert(n+' contribution'+(n===1?'':'s')+' added.')}else alert('No rows found. Use one line per person: the name, then the amount.')}
+ else if(a==='addr'){fin.r.push({d:'',t:'',by:'',a:''});go()}
+ else if(a==='delr'){fin.r.splice(+d.i,1);go()}
+ else if(a==='addp'){fin.p.push({d:'',to:'',pu:'',cat:'',t:'',a:''});go()}
+ else if(a==='delp'){fin.p.splice(+d.i,1);go()}
+ else if(a==='addch'){fin.ch.push({n:'',a:''});go()}
+ else if(a==='delch'){fin.ch.splice(+d.i,1);go()}
+ else if(a==='addteam'){const s=$('#tmsel');if(s&&s.value){fin.ti[s.value]=fin.ti[s.value]||[{i:'',a:''}];go()}}
+ else if(a==='delteam'){if(confirm('Remove this team\'s spending list? Payments linked to the team stay in the register.')){delete fin.ti[d.u];delete fin.tx[d.u];go()}}
+ else if(a==='addti'){(fin.ti[d.u]=fin.ti[d.u]||[]).push({i:'',a:''});go()}
+ else if(a==='delti'){fin.ti[d.u].splice(+d.i,1);go()}
+ else if(a==='usefin'){cur.rv.ba=String(r2(FN(cur).out));go()}
+ /* settings and backup */
  else if(a==='cfgadd'){const s=prompt('Name');if(s&&s.trim()){const l=d.l;C[l].push(l==='units'||l==='areas'?{id:(l[0]+uid()),n:s.trim()}:s.trim());go()}}
  else if(a==='cfgdel'){if(confirm('Remove this entry? Data already saved under it stays hidden.')){C[d.l].splice(+d.i,1);go()}}
  else if(a==='tpladdph'){const s=prompt('Name of the new phase');if(s&&s.trim()){C.tpl.push({p:s.trim(),i:[]});go()}}
@@ -223,14 +525,16 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b
  else if(a==='tpladditem'){const s=prompt('New checklist item');if(s&&s.trim()){C.tpl[+d.p].i.push(s.trim());go()}}
  else if(a==='tpldelitem'){C.tpl[+d.p].i.splice(+d.i,1);go()}
  else if(a==='reset'){if(confirm('Reset departments, rating areas, options and the template to defaults? Programmes are kept.')){S.cfg=dflt();go()}}
- else if(a==='export'){const u=URL.createObjectURL(new Blob([JSON.stringify(S,null,1)],{type:'application/json'})),l=document.createElement('a');l.href=u;l.download='driven-ops-backup-'+new Date().toISOString().slice(0,10)+'.json';l.click();URL.revokeObjectURL(u)}
+ else if(a==='export'){S.backup=Date.now();save();dl('driven-ops-backup-'+iso(new Date())+'.json','application/json',JSON.stringify(S,null,1));render()}
+ else if(a==='expprog')dl('driven-'+slug(cur.name)+'-'+iso(new Date())+'.json','application/json',JSON.stringify({programmes:[cur],cfg:S.cfg},null,1))
  else if(a==='import')$('#imp').click()});
 document.addEventListener('change',e=>{const t=e.target;
  if(t.dataset&&t.dataset.a==='fix'){const p=S.programmes.find(x=>x.id===t.dataset.pid);if(p){p.rv.issues[+t.dataset.i].done=t.checked;save();render()}}
+ if(t.tagName==='SELECT'&&t.dataset.k&&cur&&/^fin\.(r|p)\.\d+\.t$/.test(t.dataset.k)){save();render()}
  if(t.id==='imp'&&t.files[0]){const r=new FileReader();r.onload=()=>{try{const j=JSON.parse(r.result);if(!j||!Array.isArray(j.programmes))throw 0;
   if(!confirm('Import '+j.programmes.length+' programme(s)? Programmes with the same ID will be replaced.'))return;
   j.programmes.forEach(p=>{norm(p);const i=S.programmes.findIndex(x=>x.id===p.id);i<0?S.programmes.push(p):S.programmes[i]=p});
-  if(j.cfg&&confirm('Also import the backup\'s departments, rating areas and template?'))S.cfg=Object.assign(dflt(),j.cfg);
+  if(j.cfg&&confirm('Also import the departments, rating areas and template from this file? Choose OK if it came from another Hub so the team names match.'))S.cfg=Object.assign(dflt(),j.cfg,{unitsV3:true});
   save();render()}catch(x){alert('That file is not a valid Driven backup.')}t.value=''};r.readAsText(t.files[0])}});
 render();
 </script>
