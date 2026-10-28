@@ -149,7 +149,7 @@ td.vr{font-size:.8rem;white-space:nowrap;padding:2px 10px;color:var(--mute)}
 </style>
 </head>
 <body>
-<header class="top"><div><svg class="mk" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V22M8 11h8M5 15a7 7 0 0 0 14 0M3 13l2 2M21 13l-2 2"/></svg><span class="br">DRIVEN<small>Operations Hub</small></span><nav><a href="#/" id="n1">Programmes</a><a href="#/settings" id="n2">Settings</a></nav></div></header>
+<header class="top"><div><svg class="mk" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V22M8 11h8M5 15a7 7 0 0 0 14 0M3 13l2 2M21 13l-2 2"/></svg><span class="br">DRIVEN<small>Operations Hub</small></span><nav><a href="#/" id="n1">Programmes</a><a href="#/settings" id="n2">Settings</a><a href="#" id="syn" style="font-size:.8rem">Sync: off</a></nav></div></header>
 <main id="app"></main>
 <input type="file" id="imp" accept="application/json" hidden>
 <script>
@@ -188,7 +188,7 @@ const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const get=(o,k)=>k.split('.').reduce((a,b)=>a==null?'':a[b],o);
 const set=(o,k,v)=>{const a=k.split('.'),l=a.pop();let x=o;for(const p of a){if(x[p]==null)x[p]={};x=x[p]}x[l]=v};
-const save=()=>{S.changed=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){if(!warned){warned=true;alert('Could not save in this browser. Use Export to keep a backup.')}}};
+const save=()=>{S.changed=Date.now();window.syncPush&&syncPush();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){if(!warned){warned=true;alert('Could not save in this browser. Use Export to keep a backup.')}}};
 const pad=n=>String(n).padStart(2,'0');
 const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 const fmt=d=>d?new Date(d+'T00:00').toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}):'No date set';
@@ -272,7 +272,7 @@ function home(){const fx=openFixes();
  ${bkNote()}
  ${fx.length?`<div class="warn"><b>Open fixes from past reviews (${fx.length})</b>${fx.map(x=>`<div class="ck"><input type="checkbox" data-a="fix" data-pid="${x.pid}" data-i="${x.i}"><span>${esc(x.fix||x.issue)}<br><span class="m">${esc(x.pn)}${x.owner?' &middot; '+esc(x.owner):''}${x.deadline?' &middot; due '+fmt(x.deadline):''}${x.repeat?' &middot; repeat issue':''}</span></span></div>`).join('')}</div>`:''}
  <input type="search" id="srch" placeholder="Search programmes" value="${esc(q)}" style="margin-bottom:14px"><div id="list">${list()}</div>
- <div class="note">Your data is saved in this browser only. Export a backup regularly, and import it to use another phone or computer. Each programme can also be exported on its own, or shared as a finished report file.</div>
+ <div class="note">Your data is saved in this browser and, when Sync is on, shared live with your team. Export a backup regularly anyway. Each programme can also be exported on its own, or shared as a finished report file.</div>
  <div class="bar"><button class="b" data-a="export">Export backup</button><button class="b" data-a="import">Import backup</button></div>`}
 /* ---------- programme panels ---------- */
 function planPanel(p,fxs,g){const cf=S.cfg;return`<section class="panel${tab==='plan'?' show':''}"><h2>Details</h2>
@@ -537,6 +537,59 @@ document.addEventListener('change',e=>{const t=e.target;
   if(j.cfg&&confirm('Also import the departments, rating areas and template from this file? Choose OK if it came from another Hub so the team names match.'))S.cfg=Object.assign(dflt(),j.cfg,{unitsV3:true});
   save();render()}catch(x){alert('That file is not a valid Driven backup.')}t.value=''};r.readAsText(t.files[0])}});
 render();
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ===== LIVE SYNC (Firebase). Paste your keys from Firebase Console > Project settings > Your apps ===== */
+const FIREBASE_CONFIG={
+ apiKey:"PASTE_API_KEY",
+ authDomain:"PASTE_PROJECT_ID.firebaseapp.com",
+ projectId:"PASTE_PROJECT_ID",
+ appId:"PASTE_APP_ID"
+};
+(function(){
+ const pill=document.getElementById('syn'),TK='driven-team';
+ const st=t=>{pill.textContent='Sync: '+t};
+ if(!window.firebase||/PASTE_/.test(FIREBASE_CONFIG.apiKey)){st('not set up');pill.onclick=e=>{e.preventDefault();alert('Add your Firebase keys at the top of the sync script in index.html first.')};return}
+ let db,team=localStorage.getItem(TK)||'',unsubs=[],pushed={},pushedCfg=null,ready={p:false,c:false,cfgExists:false},timer=null,queue=[],cfgIn=null;
+ try{firebase.initializeApp(FIREBASE_CONFIG);db=firebase.firestore()}catch(e){st('error');return}
+ const typing=()=>{const a=document.activeElement;return a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)&&a.id!=='srch'&&$('#app').contains(a)};
+ function applyIn(){
+  if(typing()){setTimeout(applyIn,600);return}
+  let ch=false;
+  queue.splice(0).forEach(([id,d])=>{
+   if(d.deleted){S.programmes=S.programmes.filter(p=>p.id!==id);pushed[id]='deleted';ch=true;return}
+   try{const p=JSON.parse(d.json);norm(p);const i=S.programmes.findIndex(x=>x.id===id);i<0?S.programmes.push(p):S.programmes[i]=p;pushed[id]=JSON.stringify(p);ch=true}catch(e){}});
+  if(cfgIn){try{S.cfg=Object.assign(dflt(),JSON.parse(cfgIn),{unitsV3:true});pushedCfg=JSON.stringify(S.cfg);ch=true}catch(e){}cfgIn=null}
+  if(ch){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}render()}
+  syncPush()};
+ window.syncPush=function(){
+  if(!db||!team||!ready.p||!ready.c)return;
+  clearTimeout(timer);timer=setTimeout(()=>{
+   const b=db.batch(),base=db.collection('teams').doc(team);let n=0;
+   S.programmes.forEach(p=>{const j=JSON.stringify(p);if(pushed[p.id]!==j){b.set(base.collection('programmes').doc(p.id),{json:j,t:Date.now()});pushed[p.id]=j;n++}});
+   Object.keys(pushed).forEach(id=>{if(pushed[id]!=='deleted'&&!S.programmes.some(p=>p.id===id)){b.set(base.collection('programmes').doc(id),{deleted:true,t:Date.now()});pushed[id]='deleted';n++}});
+   const c=JSON.stringify(S.cfg);if(pushedCfg!==c){b.set(base.collection('meta').doc('cfg'),{json:c,t:Date.now()});pushedCfg=c;n++}
+   if(n)b.commit().then(()=>st('on (saved)')).catch(()=>st('offline, will retry'))},700)};
+ function stop(){unsubs.forEach(f=>f());unsubs=[];pushed={};pushedCfg=null;ready={p:false,c:false}}
+ function start(){
+  stop();if(!team){st('off');return}st('connecting');const base=db.collection('teams').doc(team);
+  unsubs.push(base.collection('programmes').onSnapshot(sn=>{
+   sn.docChanges().forEach(c=>{const d=c.doc.data();if(c.type==='removed')return;
+    const raw=d.json||'';if(!d.deleted&&pushed[c.doc.id]===raw)return;queue.push([c.doc.id,d])});
+   if(!ready.p){ready.p=true}st('on');applyIn()},()=>st('error: check rules')));
+  unsubs.push(base.collection('meta').doc('cfg').onSnapshot(sn=>{
+   if(sn.exists){const j=sn.data().json;if(j!==pushedCfg){cfgIn=j}}
+   ready.c=true;applyIn()},()=>st('error: check rules')))};
+ pill.onclick=e=>{e.preventDefault();
+  const t=prompt('Team code (use the same long code on every phone). Leave empty to turn sync off.',team);
+  if(t===null)return;const c=t.trim().toLowerCase().replace(/[^a-z0-9-]/g,'');
+  if(c&&c.length<8){alert('Use at least 8 characters. The team code works like a password.');return}
+  team=c;localStorage.setItem(TK,team);start()};
+ start();
+})();
 </script>
 </body>
 </html>
